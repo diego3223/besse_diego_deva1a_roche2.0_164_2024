@@ -101,12 +101,26 @@ def genres_ajouter_wtf():
     if request.method == "POST":
         try:
             if form.validate_on_submit():
-                name_genre_wtf = form.nom_genre_wtf.data
-                name_genre = name_genre_wtf.lower()
-                valeurs_insertion_dictionnaire = {"value_intitule_genre": name_genre}
+                civilite_wtf = form.civilite_wtf.data
+                nom_wtf = form.nom_wtf.data
+                prenom_wtf = form.prenom_wtf.data
+                nationnalite_wtf = form.nationnalite_wtf.data
+                date_naissance_wtf = form.date_naissance_wtf.data
+                courriel_wtf = form.courriel_wtf.data
+                telephone_wtf = form.telephone_wtf.data
+                FK_equipes_wtf = form.FK_equipes_wtf.data
+                valeurs_insertion_dictionnaire = {"value_civilite": civilite_wtf,
+                                                  "value_nom": nom_wtf,
+                                                  "value_prenom": prenom_wtf,
+                                                  "value_nationnalite": nationnalite_wtf,
+                                                  "value_date_naissance": date_naissance_wtf,
+                                                  "value_courriel": courriel_wtf,
+                                                  "value_telephone": telephone_wtf,
+                                                  "value_FK_equipes": FK_equipes_wtf,
+                                                  }
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_genre = """INSERT INTO t_genre (id_genre,intitule_genre) VALUES (NULL,%(value_intitule_genre)s) """
+                strsql_insert_genre = """INSERT INTO t_joueurs (ID_joueurs, civilite, nom, prenom, nationnalite, date_naissance, courriel, telephone, FK_equipes) VALUES (NULL,%(value_civilite)s, %(value_nom)s, %(value_prenom)s, %(value_nationnalite)s, %(value_date_naissance)s, %(value_courriel)s, %(value_telephone)s, %(value_FK_equipes)s)"""
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire)
 

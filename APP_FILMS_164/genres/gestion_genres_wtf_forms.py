@@ -15,15 +15,88 @@ class FormWTFAjouterGenres(FlaskForm):
         Dans le formulaire "genres_ajouter_wtf.html" on impose que le champ soit rempli.
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
-    nom_genre_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    nom_genre_wtf = StringField("Clavioter le genre ", validators=[Length(min=2, max=20, message="min 2 max 20"),
-                                                                   Regexp(nom_genre_regexp,
+    civilite_regexp = ""
+    civilite_wtf = StringField("Clavioter la civilité ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                                 Regexp(civilite_regexp,
+                                                                        message="Pas de chiffres, de caractères "
+                                                                                "spéciaux, "
+                                                                                "d'espace à double, de double "
+                                                                                "apostrophe, de double trait union")
+                                                                 ])
+
+
+    nom_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
+    nom_wtf = StringField("Clavioter le nom ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                                   Regexp(nom_regexp,
                                                                           message="Pas de chiffres, de caractères "
                                                                                   "spéciaux, "
                                                                                   "d'espace à double, de double "
                                                                                   "apostrophe, de double trait union")
                                                                    ])
-    submit = SubmitField("Enregistrer genre")
+
+    #prenom_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
+    prenom_regexp = ""
+    prenom_wtf = StringField("Clavioter le prénom ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                                   Regexp(prenom_regexp,
+                                                                          message="Pas de chiffres, de caractères "
+                                                                                  "spéciaux, "
+                                                                                  "d'espace à double, de double "
+                                                                                  "apostrophe, de double trait union")
+                                                                   ])
+
+    # prenom_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
+    nationnalite_regexp = ""
+    nationnalite_wtf = StringField("Clavioter la nationnalité ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                                 Regexp(nationnalite_regexp,
+                                                                        message="Pas de chiffres, de caractères "
+                                                                                "spéciaux, "
+                                                                                "d'espace à double, de double "
+                                                                                "apostrophe, de double trait union")
+                                                                    ])
+
+    date_naissance_regexp = ""
+    date_naissance_wtf = StringField("Clavioter la date de naissance ",
+                                   validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                               Regexp(date_naissance_regexp,
+                                                      message="Pas de chiffres, de caractères "
+                                                              "spéciaux, "
+                                                              "d'espace à double, de double "
+                                                              "apostrophe, de double trait union")
+                                               ])
+
+    courriel_regexp = ""
+    courriel_wtf = StringField("Clavioter l'E-Mail ",
+                                     validators=[Length(min=2, max=40, message="min 2 max 40"),
+                                                 Regexp(courriel_regexp,
+                                                        message="Pas de chiffres, de caractères "
+                                                                "spéciaux, "
+                                                                "d'espace à double, de double "
+                                                                "apostrophe, de double trait union")
+                                                 ])
+
+    telephone_regexp = ""
+    telephone_wtf = StringField("Clavioter le numéro de téléphone ",
+                               validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                           Regexp(telephone_regexp,
+                                                  message="Pas de chiffres, de caractères "
+                                                          "spéciaux, "
+                                                          "d'espace à double, de double "
+                                                          "apostrophe, de double trait union")
+                                           ])
+
+    FK_equipes_regexp = ""
+    FK_equipes_wtf = StringField("Clavioter l'équipe ",
+                                validators=[Length(min=1, max=20, message="min 1 max 20"),
+                                            Regexp(FK_equipes_regexp,
+                                                   message="Pas de chiffres, de caractères "
+                                                           "spéciaux, "
+                                                           "d'espace à double, de double "
+                                                           "apostrophe, de double trait union")
+                                            ])
+
+
+
+    submit = SubmitField("Enregistrer joueur")
 
 
 class FormWTFUpdateGenre(FlaskForm):

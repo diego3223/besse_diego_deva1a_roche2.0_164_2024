@@ -8,10 +8,10 @@
 				<thead>
 					<tr>
 						<th class="" >
-						  Id
+						  ID
 						</th>
 						<th class="" >
-						  Nom
+						  Cotisations
 						</th>
 						<th class="" >
 						  Durée
@@ -32,19 +32,19 @@
 			<tbody>
 				<tr>
 					  <th class="align-middle">
-						  {{ row.id_film }}
+						  {{ row.ID_joueurs }}
 					  </th>
 					  <th class="align-middle">
-						{{ row.nom_film }}
+						{{ row.nom }}
 					  </th>
 					  <th class="align-middle">
-						{{ row.duree_film|default("", True) }}
+						{{ row.prenom|default("", True) }}
 					  </th>
 					  <th class="align-middle">
-						{{ row.date_sortie_film|default("", True) }}
+						{{ row.ville|default("", True) }}
 					  </th>
 					  <th class="align-middle">
-						{{ row.description_film|default("", True) }}
+						{{ row.ville|default("", True) }}
 					  </th>
 					  <th class="align-middle">
 						<img class="img" src={{ row.cover_link_film|default(None, True) }} style="border: 0;display:block; width:150px; max-height:auto;"  alt = "image masquée FFP8 (in COVID-19 Memory) (absente) mod 164">
