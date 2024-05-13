@@ -1,5 +1,5 @@
 """
-    Fichier : gestion_genres_wtf_forms.py
+    Fichier : gestion_equipes_wtf_forms.py
     Auteur : OM 2021.03.22
     Gestion des formulaires avec WTF
 """
@@ -8,7 +8,6 @@ from wtforms import StringField, DateField
 from wtforms import SubmitField
 from wtforms.validators import Length, InputRequired, DataRequired
 from wtforms.validators import Regexp
-
 
 class FormWTFAjouterGenres(FlaskForm):
     """
@@ -94,6 +93,26 @@ class FormWTFAjouterGenres(FlaskForm):
                                                            "apostrophe, de double trait union")
                                             ])
 
+    FK_cotisations_regexp = ""
+    FK_cotisations_wtf = StringField("Clavioter la cotisation ",
+                                 validators=[Length(min=1, max=20, message="min 1 max 20"),
+                                             Regexp(FK_cotisations_regexp,
+                                                    message="Pas de chiffres, de caractères "
+                                                            "spéciaux, "
+                                                            "d'espace à double, de double "
+                                                            "apostrophe, de double trait union")
+                                             ])
+
+    FK_passeport_regexp = ""
+    FK_passeport_wtf = StringField("Clavioter le passeport ",
+                                     validators=[Length(min=1, max=20, message="min 1 max 20"),
+                                                 Regexp(FK_passeport_regexp,
+                                                        message="Pas de chiffres, de caractères "
+                                                                "spéciaux, "
+                                                                "d'espace à double, de double "
+                                                                "apostrophe, de double trait union")
+                                                 ])
+
 
 
     submit = SubmitField("Enregistrer joueur")
@@ -121,7 +140,7 @@ class FormWTFUpdateGenre(FlaskForm):
 
 class FormWTFDeleteGenre(FlaskForm):
     """
-        Dans le formulaire "genre_delete_wtf.html"
+        Dans le formulaire "equipes_delete_wtf.html"
 
         nom_genre_delete_wtf : Champ qui reçoit la valeur du genre, lecture seule. (readonly=true)
         submit_btn_del : Bouton d'effacement "DEFINITIF".

@@ -67,6 +67,20 @@
 							<span style="color: red;">[{{ error }}]</span>
 						{% endfor %}
 					</p>
+					<p>
+						{{ form.FK_cotisations_wtf.label }}<br>
+						{{ form.FK_cotisations_wtf(size=32) }}<br>
+						{% for error in form.FK_cotisations_wtf.errors %}
+							<span style="color: red;">[{{ error }}]</span>
+						{% endfor %}
+					</p>
+					<p>
+						{{ form.FK_passeport_wtf.label }}<br>
+						{{ form.FK_passeport_wtf(size=32) }}<br>
+						{% for error in form.FK_passeport_wtf.errors %}
+							<span style="color: red;">[{{ error }}]</span>
+						{% endfor %}
+					</p>
 
 				</div>
 				{{ form.submit(class="btn btn-primary") }}
