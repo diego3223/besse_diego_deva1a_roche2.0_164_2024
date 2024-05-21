@@ -43,6 +43,13 @@ try:
     from APP_FILMS_164.essais_wtf_forms import gestion_wtf_forms_demo_select
     from APP_FILMS_164.genres import gestion_genres_crud
     from APP_FILMS_164.adresse import gestion_adresse_crud
+    from APP_FILMS_164.adresse import gestion_adresse_wtf_forms
+    from APP_FILMS_164.equipes import gestion_equipes_crud
+    from APP_FILMS_164.equipes import gestion_equipes_wtf_forms
+    from APP_FILMS_164.cotisations import gestion_cotisations_crud
+    from APP_FILMS_164.cotisations import gestion_cotisations_wtf_forms
+    from APP_FILMS_164.passeport import gestion_passeport_crud
+    from APP_FILMS_164.passeport import gestion_passeport_wtf_forms
     from APP_FILMS_164.demos_om_164 import routes_demos
 
     from APP_FILMS_164.films_genres import gestion_films_genres_crud

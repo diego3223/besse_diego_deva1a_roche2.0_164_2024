@@ -29,6 +29,7 @@ from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFUpdateGenre
 """
 
 
+
 @app.route("/adresse_afficher/<string:order_by>/<int:ID_adresse_sel>", methods=['GET', 'POST'])
 def adresse_afficher(order_by, ID_adresse_sel):
     if request.method == "GET":
@@ -44,11 +45,11 @@ def adresse_afficher(order_by, ID_adresse_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_ID_adresse_selected_dictionnaire = {"value_id_genre_selected": ID_adresse_sel}
-                    strsql_adresse_afficher = """SELECT id_genre, intitule_genre, date_ins_genre  FROM t_genre WHERE id_genre = %(value_id_genre_selected)s"""
+                    strsql_adresse_afficher = """SELECT ID_adresse, pays, canton, code_postal, ville, numero_rue  FROM t_adresse WHERE id_genre = %(value_ID_adresse)s, %(value_pays)s, %(value_canton)s, %(value_code_postal)s, %(value_ville)s, %(value_numero_rue)s """
 
                     mc_afficher.execute(strsql_adresse_afficher, valeur_ID_adresse_selected_dictionnaire)
                 else:
-                    strsql_adresse_afficher = """SELECT id_genre, intitule_genre, date_ins_genre  FROM t_genre ORDER BY id_genre DESC"""
+                    strsql_adresse_afficher = """SELECT ID_adresse, pays, canton, code_postal, ville, numero_rue FROM t_adresse ORDER BY ID_adresse DESC"""
 
                     mc_afficher.execute(strsql_adresse_afficher)
 
@@ -102,7 +103,7 @@ def adresse_ajouter_wtf():
     if request.method == "POST":
         try:
             if form.validate_on_submit():
-                name_adresse_wtf = form.nom_genre_wtf.data
+                name_adresse_wtf = form.name_adresse_wtf.data
                 name_adresse = name_adresse_wtf.lower()
                 valeurs_insertion_dictionnaire = {"value_intitule_genre": name_adresse}
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
@@ -145,7 +146,7 @@ def adresse_ajouter_wtf():
 """
 
 
-@app.route("/genre_update", methods=['GET', 'POST'])
+@app.route("/adresse_update", methods=['GET', 'POST'])
 def adresse_update_wtf():
     # L'utilisateur vient de cliquer sur le bouton "EDIT". Récupère la valeur de "id_genre"
     id_genre_update = request.values['id_genre_btn_edit_html']
@@ -218,7 +219,7 @@ def adresse_update_wtf():
 """
 
 
-@app.route("/genre_delete", methods=['GET', 'POST'])
+@app.route("/adresse_delete", methods=['GET', 'POST'])
 def adresse_delete_wtf():
     data_films_attribue_genre_delete = None
     btn_submit_del = None

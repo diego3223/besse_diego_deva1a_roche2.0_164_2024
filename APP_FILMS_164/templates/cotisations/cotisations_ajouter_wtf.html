@@ -1,32 +1,32 @@
 {% extends "base.html" %}
-{% block title %} Editer un GENRE (WTF) {% endblock %}
+{% block title %} Ajouter un GENRE (WTF) {% endblock %}
 {% block body %}
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
 			<p>
-				Editer un JOUEUR
+				Ajouter une nouveau cotisation (WTForms)
 			</p>
 			<form action="" method="POST" novalidate>
 				<!-- Protection contre les attaques Cross-Site Request Forgery (CSRF) -->
-				{{ form_update.hidden_tag() }}
+				{{ form.hidden_tag() }}
 				<div class="form-group">
 					<p>
-						{{ form_update.civilite_update_wtf.label }}<br>
-						{{ form_update.civilite_update_wtf(size=32) }}<br>
-						{% for error in form_update.civilite_update_wtf.errors %}
+						{{ form.nom_coti_wtf.label }}<br>
+						{{ form.nom_coti_wtf(size=32) }}<br>
+						{% for error in form.nom_coti_wtf.errors %}
 							<span style="color: red;">[{{ error }}]</span>
 						{% endfor %}
 					</p>
 					<p>
-						{{ form_update.nom_update_wtf.label }}<br>
-						{{ form_update.nom_update_wtf(size=32) }}<br>
-						{% for error in form_update.nom_update_wtf.errors %}
+						{{ form.prix_coti_wtf.label }}<br>
+						{{ form.prix_coti_wtf(size=32) }}<br>
+						{% for error in form.prix_coti_wtf.errors %}
 							<span style="color: red;">[{{ error }}]</span>
 						{% endfor %}
 					</p>
 				</div>
-				{{ form_update.submit(class="btn btn-primary") }}
+				{{ form.submit(class="btn btn-primary") }}
 			</form>
 		</div>
 	</div>

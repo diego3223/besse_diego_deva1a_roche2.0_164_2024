@@ -1,5 +1,5 @@
 """Gestion des "routes" FLASK et des données pour les genres.
-Fichier : gestion_equipes_crud.py
+Fichier : gestion_genres_crud.py
 Auteur : OM 2021.03.16
 """
 from pathlib import Path
@@ -10,6 +10,7 @@ from flask import session
 from flask import url_for
 
 from APP_FILMS_164 import app
+from APP_FILMS_164.cotisations.gestion_cotisations_wtf_forms import FormWTFAjouterCotisations
 from APP_FILMS_164.database.database_tools import DBconnection
 from APP_FILMS_164.erreurs.exceptions import *
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFAjouterGenres
@@ -28,37 +29,37 @@ from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFUpdateGenre
 """
 
 
-@app.route("/genres_afficher/<string:order_by>/<int:id_genre_sel>", methods=['GET', 'POST'])
-def genres_afficher(order_by, id_genre_sel):
+@app.route("/cotisations_afficher/<string:order_by>/<int:ID_cotisations_sel>", methods=['GET', 'POST'])
+def cotisations_afficher(order_by, ID_cotisations_sel):
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                if order_by == "ASC" and id_genre_sel == 0:
-                    strsql_genres_afficher = """SELECT * from t_joueurs"""
-                    mc_afficher.execute(strsql_genres_afficher)
+                if order_by == "ASC" and ID_cotisations_sel == 0:
+                    strsql_cotisations_afficher = """SELECT * FROM t_cotisations"""
+                    mc_afficher.execute(strsql_cotisations_afficher)
                 elif order_by == "ASC":
                     # C'EST LA QUE VOUS ALLEZ DEVOIR PLACER VOTRE PROPRE LOGIQUE MySql
                     # la commande MySql classique est "SELECT * FROM t_genre"
                     # Pour "lever"(raise) une erreur s'il y a des erreurs sur les noms d'attributs dans la table
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
-                    valeur_id_genre_selected_dictionnaire = {"value_ID_joueurs_selected": id_genre_sel}
-                    strsql_genres_afficher = """SELECT nom, prenom, nationnalite FROM t_joueurs WHERE ID_joueurs = %(value_ID_joueurs_selected)s"""
+                    valeur_ID_cotisations_selected_dictionnaire = {"value_id_genre_selected": ID_cotisations_sel}
+                    strsql_cotisations_afficher = """SELECT ID_cotisations, nom_coti, prix_coti FROM t_cotisations WHERE id_genre = %(value_ID_cotisations)s, %(value_nom_coti)s, %(value_prix_coti)s """
 
-                    mc_afficher.execute(strsql_genres_afficher, valeur_id_genre_selected_dictionnaire)
+                    mc_afficher.execute(strsql_cotisations_afficher, valeur_ID_cotisations_selected_dictionnaire)
                 else:
-                    strsql_genres_afficher = """SELECT nom, prenom, nationnalite FROM t_joueurs ORDER BY ID_joueurs DESC"""
+                    strsql_cotisations_afficher = """SELECT ID_cotisations, nom_coti, prix_coti FROM t_cotisations ORDER BY ID_cotisations DESC"""
 
-                    mc_afficher.execute(strsql_genres_afficher)
+                    mc_afficher.execute(strsql_cotisations_afficher)
 
-                data_genres = mc_afficher.fetchall()
+                data_cotisations = mc_afficher.fetchall()
 
-                print("data_genres ", data_genres, " Type : ", type(data_genres))
+                print("data_genres ", data_cotisations, " Type : ", type(data_cotisations))
 
                 # Différencier les messages si la table est vide.
-                if not data_genres and id_genre_sel == 0:
+                if not data_cotisations and ID_cotisations_sel == 0:
                     flash("""La table "t_genre" est vide. !!""", "warning")
-                elif not data_genres and id_genre_sel > 0:
+                elif not data_cotisations and ID_cotisations_sel > 0:
                     # Si l'utilisateur change l'id_genre dans l'URL et que le genre n'existe pas,
                     flash(f"Le genre demandé n'existe pas !!", "warning")
                 else:
@@ -68,11 +69,11 @@ def genres_afficher(order_by, id_genre_sel):
 
         except Exception as Exception_genres_afficher:
             raise ExceptionGenresAfficher(f"fichier : {Path(__file__).name}  ;  "
-                                          f"{genres_afficher.__name__} ; "
+                                          f"{cotisations_afficher.__name__} ; "
                                           f"{Exception_genres_afficher}")
 
     # Envoie la page "HTML" au serveur.
-    return render_template("genres/genres_afficher.html", data=data_genres)
+    return render_template("cotisations/cotisations_afficher.html", data=data_cotisations)
 
 
 """
@@ -95,38 +96,20 @@ def genres_afficher(order_by, id_genre_sel):
 """
 
 
-@app.route("/genres_ajouter", methods=['GET', 'POST'])
-def genres_ajouter_wtf():
-    form = FormWTFAjouterGenres()
+@app.route("/cotisations_ajouter", methods=['GET', 'POST'])
+def cotisations_ajouter_wtf():
+    form = FormWTFAjouterCotisations()
     if request.method == "POST":
         try:
             if form.validate_on_submit():
-                civilite_wtf = form.civilite_wtf.data
-                nom_wtf = form.nom_wtf.data
-                prenom_wtf = form.prenom_wtf.data
-                nationnalite_wtf = form.nationnalite_wtf.data
-                date_naissance_wtf = form.date_naissance_wtf.data
-                courriel_wtf = form.courriel_wtf.data
-                telephone_wtf = form.telephone_wtf.data
-                FK_equipes_wtf = form.FK_equipes_wtf.data
-                FK_cotisations_wtf = form.FK_cotisations_wtf.data
-                FK_passeport_wtf = form.FK_passeport_wtf.data
-                valeurs_insertion_dictionnaire = {"value_civilite": civilite_wtf,
-                                                  "value_nom": nom_wtf,
-                                                  "value_prenom": prenom_wtf,
-                                                  "value_nationnalite": nationnalite_wtf,
-                                                  "value_date_naissance": date_naissance_wtf,
-                                                  "value_courriel": courriel_wtf,
-                                                  "value_telephone": telephone_wtf,
-                                                  "value_FK_equipes": FK_equipes_wtf,
-                                                  "value_FK_cotisations": FK_cotisations_wtf,
-                                                  "value_FK_passeport": FK_passeport_wtf,
-                                                  }
+                name_cotisations_wtf = form.nom_genre_wtf.data
+                name_cotisations = name_cotisations_wtf.lower()
+                valeurs_insertion_dictionnaire = {"value_intitule_genre": name_cotisations}
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_genre = """INSERT INTO t_joueurs (ID_joueurs, civilite, nom, prenom, nationnalite, date_naissance, courriel, telephone, FK_equipes, FK_cotisations, FK_passeport) VALUES (NULL,%(value_civilite)s, %(value_nom)s, %(value_prenom)s, %(value_nationnalite)s, %(value_date_naissance)s, %(value_courriel)s, %(value_telephone)s, %(value_FK_equipes)s, %(value_FK_cotisations)s, %(value_FK_passeport)s)"""
+                strsql_insert_cotisations = """INSERT INTO t_genre (id_genre,intitule_genre) VALUES (NULL,%(value_intitule_genre)s) """
                 with DBconnection() as mconn_bd:
-                    mconn_bd.execute(strsql_insert_genre, valeurs_insertion_dictionnaire)
+                    mconn_bd.execute(strsql_insert_cotisations, valeurs_insertion_dictionnaire)
 
                 flash(f"Données insérées !!", "success")
                 print(f"Données insérées !!")
@@ -134,12 +117,12 @@ def genres_ajouter_wtf():
                 # Pour afficher et constater l'insertion de la valeur, on affiche en ordre inverse. (DESC)
                 return redirect(url_for('genres_afficher', order_by='DESC', id_genre_sel=0))
 
-        except Exception as Exception_genres_ajouter_wtf:
+        except Exception as Exception_cotisations_ajouter_wtf:
             raise ExceptionGenresAjouterWtf(f"fichier : {Path(__file__).name}  ;  "
-                                            f"{genres_ajouter_wtf.__name__} ; "
-                                            f"{Exception_genres_ajouter_wtf}")
+                                            f"{cotisations_ajouter_wtf.__name__} ; "
+                                            f"{Exception_cotisations_ajouter_wtf}")
 
-    return render_template("genres/genres_ajouter_wtf.html", form=form)
+    return render_template("cotisations/cotisations_ajouter_wtf.html", form=form)
 
 
 """
@@ -163,7 +146,7 @@ def genres_ajouter_wtf():
 
 
 @app.route("/genre_update", methods=['GET', 'POST'])
-def genre_update_wtf():
+def cotisations_update_wtf():
     # L'utilisateur vient de cliquer sur le bouton "EDIT". Récupère la valeur de "id_genre"
     id_genre_update = request.values['id_genre_btn_edit_html']
 
@@ -175,17 +158,18 @@ def genre_update_wtf():
         if request.method == "POST" and form_update.submit.data:
             # Récupèrer la valeur du champ depuis "genre_update_wtf.html" après avoir cliqué sur "SUBMIT".
             # Puis la convertir en lettres minuscules.
-            civilite_update_wtf = form_update.civilite_update_wtf.data
-            civilite_update_wtf = civilite_update_wtf.lower()
-            nom_update_wtf = form_update.nom_update_wtf.data
+            name_cotisations_update = form_update.nom_genre_update_wtf.data
+            name_cotisations_update = name_cotisations_update.lower()
+            date_genre_essai = form_update.date_genre_wtf_essai.data
 
-            valeur_update_dictionnaire = {"value_civilite": civilite_update_wtf,
-                                          "value_nom": nom_update_wtf,
+            valeur_update_dictionnaire = {"value_id_genre": id_genre_update,
+                                          "value_name_genre": name_cotisations_update,
+                                          "value_date_genre_essai": date_genre_essai
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE t_joueurs SET civilite = %(value_civilite)s, 
-            nom = %(value_nom)s WHERE ID_joueurs = %(value_ID_joueurs)s"""
+            str_sql_update_intitulegenre = """UPDATE t_genre SET intitule_genre = %(value_name_genre)s, 
+            date_ins_genre = %(value_date_genre_essai)s WHERE id_genre = %(value_id_genre)s """
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
@@ -197,23 +181,23 @@ def genre_update_wtf():
             return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=id_genre_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
-            str_sql_id_genre = "SELECT ID_joueurs, civilite, nom FROM t_joueurs " \
-                               "WHERE ID_joueurs = %(value_ID_joueurs)s"
-            valeur_select_dictionnaire = {"value_ID_joueurs": id_genre_update}
+            str_sql_id_genre = "SELECT id_genre, intitule_genre, date_ins_genre FROM t_genre " \
+                               "WHERE id_genre = %(value_id_genre)s"
+            valeur_select_dictionnaire = {"value_id_genre": id_genre_update}
             with DBconnection() as mybd_conn:
                 mybd_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
-            data_civilite = mybd_conn.fetchone()
-            print("data_nom_genre ", data_civilite, " type ", type(data_civilite), " genre ",
-                  data_civilite["intitule_genre"])
+            data_nom_genre = mybd_conn.fetchone()
+            print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
+                  data_nom_genre["intitule_genre"])
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "genre_update_wtf.html"
-            form_update.civilite_update_wtf.data = data_civilite["intitule_genre"]
-            form_update.nom_update_wtf.data = data_civilite["date_ins_genre"]
+            form_update.nom_genre_update_wtf.data = data_nom_genre["intitule_genre"]
+            form_update.date_genre_wtf_essai.data = data_nom_genre["date_ins_genre"]
 
     except Exception as Exception_genre_update_wtf:
         raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
-                                      f"{genre_update_wtf.__name__} ; "
+                                      f"{cotisations_update_wtf.__name__} ; "
                                       f"{Exception_genre_update_wtf}")
 
     return render_template("genres/genre_update_wtf.html", form_update=form_update)
@@ -229,13 +213,13 @@ def genre_update_wtf():
     
     But : Effacer(delete) un genre qui a été sélectionné dans le formulaire "genres_afficher.html"
     
-    Remarque :  Dans le champ "nom_genre_delete_wtf" du formulaire "genres/equipes_delete_wtf.html",
+    Remarque :  Dans le champ "nom_genre_delete_wtf" du formulaire "genres/genre_delete_wtf.html",
                 le contrôle de la saisie est désactivée. On doit simplement cliquer sur "DELETE"
 """
 
 
 @app.route("/genre_delete", methods=['GET', 'POST'])
-def genre_delete_wtf():
+def cotisations_delete_wtf():
     data_films_attribue_genre_delete = None
     btn_submit_del = None
     # L'utilisateur vient de cliquer sur le bouton "DELETE". Récupère la valeur de "id_genre"
@@ -252,7 +236,7 @@ def genre_delete_wtf():
 
             if form_delete.submit_btn_conf_del.data:
                 # Récupère les données afin d'afficher à nouveau
-                # le formulaire "genres/equipes_delete_wtf.html" lorsque le bouton "Etes-vous sur d'effacer ?" est cliqué.
+                # le formulaire "genres/genre_delete_wtf.html" lorsque le bouton "Etes-vous sur d'effacer ?" est cliqué.
                 data_films_attribue_genre_delete = session['data_films_attribue_genre_delete']
                 print("data_films_attribue_genre_delete ", data_films_attribue_genre_delete)
 
@@ -265,8 +249,8 @@ def genre_delete_wtf():
                 valeur_delete_dictionnaire = {"value_id_genre": id_genre_delete}
                 print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
-                str_sql_delete_films_genre = """DELETE FROM t_genre_film WHERE fk_genre = %(value_id_genre)s"""
-                str_sql_delete_idgenre = """DELETE FROM t_genre WHERE id_genre = %(value_id_genre)s"""
+                str_sql_delete_films_genre = """"""
+                str_sql_delete_idgenre = """"""
                 # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_genre_film"
                 # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_genre_film"
                 with DBconnection() as mconn_bd:
@@ -295,7 +279,7 @@ def genre_delete_wtf():
                 print("data_films_attribue_genre_delete...", data_films_attribue_genre_delete)
 
                 # Nécessaire pour mémoriser les données afin d'afficher à nouveau
-                # le formulaire "genres/equipes_delete_wtf.html" lorsque le bouton "Etes-vous sur d'effacer ?" est cliqué.
+                # le formulaire "genres/genre_delete_wtf.html" lorsque le bouton "Etes-vous sur d'effacer ?" est cliqué.
                 session['data_films_attribue_genre_delete'] = data_films_attribue_genre_delete
 
                 # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
@@ -308,18 +292,18 @@ def genre_delete_wtf():
                 print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
                       data_nom_genre["intitule_genre"])
 
-            # Afficher la valeur sélectionnée dans le champ du formulaire "equipes_delete_wtf.html"
+            # Afficher la valeur sélectionnée dans le champ du formulaire "genre_delete_wtf.html"
             form_delete.nom_genre_delete_wtf.data = data_nom_genre["intitule_genre"]
 
-            # Le bouton pour l'action "DELETE" dans le form. "equipes_delete_wtf.html" est caché.
+            # Le bouton pour l'action "DELETE" dans le form. "genre_delete_wtf.html" est caché.
             btn_submit_del = False
 
-    except Exception as Exception_genre_delete_wtf:
+    except Exception as Exception_cotisations_delete_wtf:
         raise ExceptionGenreDeleteWtf(f"fichier : {Path(__file__).name}  ;  "
-                                      f"{genre_delete_wtf.__name__} ; "
-                                      f"{Exception_genre_delete_wtf}")
+                                      f"{cotisations_delete_wtf.__name__} ; "
+                                      f"{Exception_cotisations_delete_wtf}")
 
-    return render_template("genres/equipes_delete_wtf.html",
+    return render_template("genres/genre_delete_wtf.html",
                            form_delete=form_delete,
                            btn_submit_del=btn_submit_del,
                            data_films_associes=data_films_attribue_genre_delete)

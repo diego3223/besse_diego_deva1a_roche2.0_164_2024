@@ -15,62 +15,37 @@ class FormWTFAjouterAdresse(FlaskForm):
         Dans le formulaire "genres_ajouter_wtf.html" on impose que le champ soit rempli.
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
-    pays_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    pays_wtf = StringField("Clavioter le pays ", validators=[Length(min=2, max=20, message="min 2 max 20"),
-                                                                   Regexp(pays_regexp,
+    numero_passeport_regexp = ""
+    numero_passeport_wtf = StringField("Clavioter le numéro de passeport ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                                   Regexp(numero_passeport_regexp,
                                                                           message="Pas de chiffres, de caractères "
                                                                                   "spéciaux, "
                                                                                   "d'espace à double, de double "
                                                                                   "apostrophe, de double trait union")
                                                                    ])
 
-    canton_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    canton_wtf = StringField("Clavioter le canton ", validators=[Length(min=2, max=20, message="min 2 max 20"),
-                                                             Regexp(canton_regexp,
+    date_photo_passeport_regexp = ""
+    date_photo_passeport_wtf = StringField("Clavioter la date de la photo passeport ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                             Regexp(date_photo_passeport_regexp,
                                                                     message="Pas de chiffres, de caractères "
                                                                             "spéciaux, "
                                                                             "d'espace à double, de double "
                                                                             "apostrophe, de double trait union")
                                                              ])
 
-    code_postal_regexp = ""
-    code_postal_wtf = StringField("Clavioter le NPA ", validators=[Length(min=2, max=20, message="min 2 max 20"),
-                                                                 Regexp(code_postal_regexp,
+    date_qualification_regexp = ""
+    date_qualification_wtf = StringField("Clavioter la date de qualification ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                                 Regexp(date_qualification_regexp,
                                                                         message="Pas de chiffres, de caractères "
                                                                                 "spéciaux, "
                                                                                 "d'espace à double, de double "
                                                                                 "apostrophe, de double trait union")
                                                                  ])
 
-    ville_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    ville_wtf = StringField("Clavioter la ville ", validators=[Length(min=2, max=20, message="min 2 max 20"),
-                                                                   Regexp(ville_regexp,
-                                                                          message="Pas de chiffres, de caractères "
-                                                                                  "spéciaux, "
-                                                                                  "d'espace à double, de double "
-                                                                                  "apostrophe, de double trait union")
-                                                                   ])
-
-    nom_rue_regexp = ""
-    nom_rue_wtf = StringField("Clavioter le nom de la rue ", validators=[Length(min=2, max=40, message="min 2 max 40"),
-                                                               Regexp(nom_rue_regexp,
-                                                                      message="Pas de chiffres, de caractères "
-                                                                              "spéciaux, "
-                                                                              "d'espace à double, de double "
-                                                                              "apostrophe, de double trait union")
-                                                               ])
-
-    numero_rue_regexp = ""
-    numero_rue_wtf = StringField("Clavioter le numéro de la rue ", validators=[Length(min=1, max=20, message="min 1 max 20"),
-                                                               Regexp(numero_rue_regexp,
-                                                                      message="Pas de chiffres, de caractères "
-                                                                              "spéciaux, "
-                                                                              "d'espace à double, de double "
-                                                                              "apostrophe, de double trait union")
-                                                               ])
 
 
-    submit = SubmitField("Enregistrer adresse")
+
+    submit = SubmitField("Enregistrer passeport")
 
 
 class FormWTFUpdateGenre(FlaskForm):

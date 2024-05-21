@@ -38,6 +38,7 @@ def films_genres_afficher(id_film_sel):
                 LEFT JOIN t_adresse ON t_adresse.ID_adresse = t_habiter.fk_adresse
                 GROUP BY ID_joueurs
                 """
+
                 if id_film_sel == 0:
                     # le paramètre 0 permet d'afficher tous les films
                     # Sinon le paramètre représente la valeur de l'id du film
@@ -94,7 +95,7 @@ def edit_genre_film_selected():
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_afficher = """SELECT id_genre, intitule_genre FROM t_genre ORDER BY id_genre ASC"""
+                strsql_genres_afficher = """SELECT * FROM t_adresse ORDER BY ID_adresse ASC"""
                 mc_afficher.execute(strsql_genres_afficher)
             data_genres_all = mc_afficher.fetchall()
             print("dans edit_genre_film_selected ---> data_genres_all", data_genres_all)
@@ -122,7 +123,7 @@ def edit_genre_film_selected():
                 genres_films_afficher_data(valeur_id_film_selected_dictionnaire)
 
             print(data_genre_film_selected)
-            lst_data_film_selected = [item['id_film'] for item in data_genre_film_selected]
+            lst_data_film_selected = [item['ID_joueurs'] for item in data_genre_film_selected]
             print("lst_data_film_selected  ", lst_data_film_selected,
                   type(lst_data_film_selected))
 
@@ -135,7 +136,7 @@ def edit_genre_film_selected():
 
             # Dans le composant "tags-selector-tagselect" on doit connaître
             # les genres qui sont déjà sélectionnés.
-            lst_data_genres_films_old_attribues = [item['id_genre'] for item in data_genres_films_attribues]
+            lst_data_genres_films_old_attribues = [item['ID_adresse'] for item in data_genres_films_attribues]
             session['session_lst_data_genres_films_old_attribues'] = lst_data_genres_films_old_attribues
             print("lst_data_genres_films_old_attribues  ", lst_data_genres_films_old_attribues,
                   type(lst_data_genres_films_old_attribues))
@@ -148,7 +149,7 @@ def edit_genre_film_selected():
 
             # Extrait les valeurs contenues dans la table "t_genres", colonne "intitule_genre"
             # Le composant javascript "tagify" pour afficher les tags n'a pas besoin de l'id_genre
-            lst_data_genres_films_non_attribues = [item['intitule_genre'] for item in data_genres_films_non_attribues]
+            lst_data_genres_films_non_attribues = [item['ville'] for item in data_genres_films_non_attribues]
             print("lst_all_genres gf_edit_genre_film_selected ", lst_data_genres_films_non_attribues,
                   type(lst_data_genres_films_non_attribues))
 
@@ -274,23 +275,23 @@ def update_genre_film_selected():
 
 
 def genres_films_afficher_data(valeur_id_film_selected_dict):
-    print("valeur_id_film_selected_dict...", valeur_id_film_selected_dict)
+    print("besse valeur_id_film_selected_dict...", valeur_id_film_selected_dict)
     try:
 
-        strsql_film_selected = """SELECT id_film, nom_film, duree_film, description_film, cover_link_film, date_sortie_film, GROUP_CONCAT(id_genre) as GenresFilms FROM t_genre_film
-                                        INNER JOIN t_film ON t_film.id_film = t_genre_film.fk_film
-                                        INNER JOIN t_genre ON t_genre.id_genre = t_genre_film.fk_genre
-                                        WHERE id_film = %(value_id_film_selected)s"""
+        strsql_film_selected = """SELECT ID_joueurs, civilite, nom, prenom GROUP_CONCAT(ID_adresse) as JoueursAdresse FROM t_habiter
+                                        INNER JOIN t_joueurs ON t_joueurs.ID_joueurs = t_habiter.FK_joueurs
+                                        INNER JOIN t_adresse ON t_adresse.ID_adresse = t_habiter.FK_adresse
+                                        WHERE ID_joueurs = %(value_id_film_selected)s"""
 
-        strsql_genres_films_non_attribues = """SELECT id_genre, intitule_genre FROM t_genre WHERE id_genre not in(SELECT id_genre as idGenresFilms FROM t_genre_film
-                                                    INNER JOIN t_film ON t_film.id_film = t_genre_film.fk_film
-                                                    INNER JOIN t_genre ON t_genre.id_genre = t_genre_film.fk_genre
-                                                    WHERE id_film = %(value_id_film_selected)s)"""
+        strsql_genres_films_non_attribues = """SELECT ID_adresse, ville FROM t_adresse WHERE ID_adresse not in(SELECT ID_adresse as idHabiter FROM t_habiter
+                                                    INNER JOIN t_joueurs ON t_joueurs.ID_joueurs = t_habiter.FK_joueurs
+                                                    INNER JOIN t_adresse ON t_adresse.ID_adresse = t_habiter.FK_adresse
+                                                    WHERE ID_joueurs = %(value_id_film_selected)s)"""
 
-        strsql_genres_films_attribues = """SELECT id_film, id_genre, intitule_genre FROM t_genre_film
-                                            INNER JOIN t_film ON t_film.id_film = t_genre_film.fk_film
-                                            INNER JOIN t_genre ON t_genre.id_genre = t_genre_film.fk_genre
-                                            WHERE id_film = %(value_id_film_selected)s"""
+        strsql_genres_films_attribues = """SELECT ID_joueurs, ID_adresse, ville FROM t_habiter
+                                            INNER JOIN t_joueurs ON t_joueurs.ID_joueurs = t_habiter.FK_joueurs
+                                            INNER JOIN t_adresse ON t_adresse.ID_adresse = t_habiter.FK_adresse
+                                            WHERE ID_joueurs = %(value_id_film_selected)s"""
 
         # Du fait de l'utilisation des "context managers" on accède au curseur grâce au "with".
         with DBconnection() as mc_afficher:
