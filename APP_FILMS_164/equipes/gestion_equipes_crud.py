@@ -10,7 +10,7 @@ from flask import session
 from flask import url_for
 
 from APP_FILMS_164 import app
-from APP_FILMS_164.adresse.gestion_adresse_wtf_forms import FormWTFAjouterAdresse
+from APP_FILMS_164.equipes.gestion_equipes_wtf_forms import FormWTFAjouterEquipes
 from APP_FILMS_164.database.database_tools import DBconnection
 from APP_FILMS_164.erreurs.exceptions import *
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFAjouterGenres
@@ -98,16 +98,15 @@ def equipes_afficher(order_by, ID_equipes_sel):
 
 @app.route("/equipes_ajouter", methods=['GET', 'POST'])
 def equipes_ajouter_wtf():
-    form = FormWTFAjouterAdresse()
+    form = FormWTFAjouterEquipes()
     if request.method == "POST":
         try:
             if form.validate_on_submit():
-                equipes_wtf = form.equipes_wtf.data
-                equipes = equipes_wtf.lower()
-                valeurs_insertion_dictionnaire = {"value_intitule_genre": equipes}
+                nom_equipes_wtf = form.nom_equipes_wtf.data
+                valeurs_insertion_dictionnaire = {"value_nom_equipes": nom_equipes_wtf}
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_equipes = """INSERT INTO t_genre (id_genre,intitule_genre) VALUES (NULL,%(value_intitule_genre)s) """
+                strsql_insert_equipes = """INSERT INTO t_equipes (ID_equipes,nom_equipes) VALUES (NULL,%(value_nom_equipes)s) """
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_equipes, valeurs_insertion_dictionnaire)
 

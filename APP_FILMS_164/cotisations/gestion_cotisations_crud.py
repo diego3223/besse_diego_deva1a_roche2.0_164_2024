@@ -102,12 +102,14 @@ def cotisations_ajouter_wtf():
     if request.method == "POST":
         try:
             if form.validate_on_submit():
-                name_cotisations_wtf = form.nom_genre_wtf.data
-                name_cotisations = name_cotisations_wtf.lower()
-                valeurs_insertion_dictionnaire = {"value_intitule_genre": name_cotisations}
+                nom_coti_wtf = form.nom_coti_wtf.data
+                prix_coti_wtf = form.prix_coti_wtf.data
+                valeurs_insertion_dictionnaire = {"value_nom_coti": nom_coti_wtf,
+                                                  "value_prix_coti": prix_coti_wtf
+                                                  }
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_cotisations = """INSERT INTO t_genre (id_genre,intitule_genre) VALUES (NULL,%(value_intitule_genre)s) """
+                strsql_insert_cotisations = """INSERT INTO t_cotisations (ID_cotisations, nom_coti, prix_coti) VALUES (NULL,%(value_nom_coti)s, %(value_prix_coti)s) """
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_cotisations, valeurs_insertion_dictionnaire)
 

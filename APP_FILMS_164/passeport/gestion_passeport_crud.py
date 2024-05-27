@@ -10,7 +10,7 @@ from flask import session
 from flask import url_for
 
 from APP_FILMS_164 import app
-from APP_FILMS_164.adresse.gestion_adresse_wtf_forms import FormWTFAjouterAdresse
+from APP_FILMS_164.passeport.gestion_passeport_wtf_forms import FormWTFAjouterPasseport
 from APP_FILMS_164.database.database_tools import DBconnection
 from APP_FILMS_164.erreurs.exceptions import *
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFAjouterGenres
@@ -99,16 +99,20 @@ def passeport_afficher(order_by, ID_passeport_sel):
 
 @app.route("/passeport_ajouter", methods=['GET', 'POST'])
 def passeport_ajouter_wtf():
-    form = FormWTFAjouterAdresse()
+    form = FormWTFAjouterPasseport()
     if request.method == "POST":
         try:
             if form.validate_on_submit():
-                name_passeport_wtf = form.name_passeport_wtf.data
-                name_passeport = name_passeport_wtf.lower()
-                valeurs_insertion_dictionnaire = {"value_intitule_genre": name_passeport}
+                numero_passeport_wtf = form.numero_passeport_wtf.data
+                date_photo_passeport_wtf = form.date_photo_passeport_wtf.data
+                date_qualification_wtf = form.date_qualification_wtf.data
+                valeurs_insertion_dictionnaire = {"value_numero_passeport": numero_passeport_wtf,
+                                                  "value_date_photo_passeport": date_photo_passeport_wtf,
+                                                  "value_date_qualification": date_qualification_wtf
+                                                  }
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_passeport = """INSERT INTO t_genre (id_genre,intitule_genre) VALUES (NULL,%(value_intitule_genre)s) """
+                strsql_insert_passeport = """INSERT INTO t_passeport (ID_passeport, numero_passeport, date_photo_passeport, date_qualification) VALUES (NULL,%(value_numero_passeport)s, %(value_date_photo_passeport)s, %(value_date_qualification)s) """
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_passeport, valeurs_insertion_dictionnaire)
 

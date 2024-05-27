@@ -103,12 +103,22 @@ def adresse_ajouter_wtf():
     if request.method == "POST":
         try:
             if form.validate_on_submit():
-                name_adresse_wtf = form.name_adresse_wtf.data
-                name_adresse = name_adresse_wtf.lower()
-                valeurs_insertion_dictionnaire = {"value_intitule_genre": name_adresse}
+                pays_adr_wtf = form.pays_wtf.data
+                canton_adr_wtf = form.canton_wtf.data
+                code_postal_adr_wtf = int(form.code_postal_wtf.data)  # convertir en integer car dans votre BD c'est INT
+                ville_adr_wtf = form.ville_wtf.data
+                nom_rue_adr_wtf = form.nom_rue_wtf.data
+                numero_rue_adr_wtf = form.numero_rue_wtf.data
+                valeurs_insertion_dictionnaire = {"value_pays": pays_adr_wtf,
+                                                  "value_canton": canton_adr_wtf,
+                                                  "value_code_postal": code_postal_adr_wtf,
+                                                  "value_ville": ville_adr_wtf,
+                                                  "value_nom_rue": nom_rue_adr_wtf,
+                                                  "value_numero_rue": numero_rue_adr_wtf,
+                                                  }
                 print("valeurs_insertion_dictionnaire ", valeurs_insertion_dictionnaire)
 
-                strsql_insert_adresse = """INSERT INTO t_genre (id_genre,intitule_genre) VALUES (NULL,%(value_intitule_genre)s) """
+                strsql_insert_adresse = """INSERT INTO t_adresse (ID_adresse,pays, canton, code_postal, ville, nom_rue, numero_rue) VALUES (NULL,%(value_pays)s,%(value_canton)s,%(value_code_postal)s,%(value_ville)s, %(value_nom_rue)s, %(value_numero_rue)s) """
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(strsql_insert_adresse, valeurs_insertion_dictionnaire)
 

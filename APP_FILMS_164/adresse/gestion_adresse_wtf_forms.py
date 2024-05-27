@@ -52,13 +52,14 @@ class FormWTFAjouterAdresse(FlaskForm):
                                                                    ])
 
     nom_rue_regexp = ""
-    nom_rue_wtf = StringField("Clavioter le nom de la rue ", validators=[Length(min=2, max=40, message="min 2 max 40"),
+    nom_rue_wtf = StringField("Clavioter le nom de la rue ", validators=[Length(min=1, max=40, message="min 2 max 40"),
                                                                Regexp(nom_rue_regexp,
                                                                       message="Pas de chiffres, de caractères "
                                                                               "spéciaux, "
                                                                               "d'espace à double, de double "
                                                                               "apostrophe, de double trait union")
                                                                ])
+
 
     numero_rue_regexp = ""
     numero_rue_wtf = StringField("Clavioter le numéro de la rue ", validators=[Length(min=1, max=20, message="min 1 max 20"),

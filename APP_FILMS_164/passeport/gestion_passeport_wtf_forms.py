@@ -10,7 +10,7 @@ from wtforms.validators import Length, InputRequired, DataRequired
 from wtforms.validators import Regexp
 
 
-class FormWTFAjouterAdresse(FlaskForm):
+class FormWTFAjouterPasseport(FlaskForm):
     """
         Dans le formulaire "genres_ajouter_wtf.html" on impose que le champ soit rempli.
         Définition d'un "bouton" submit avec un libellé personnalisé.
