@@ -25,6 +25,62 @@
 							<span style="color: red;">[{{ error }}]</span>
 						{% endfor %}
 					</p>
+					<p>
+						{{ form_update.prenom_update_wtf.label }}<br>
+						{{ form_update.prenom_update_wtf(size=32) }}<br>
+						{% for error in form_update.prenom_update_wtf.errors %}
+							<span style="color: red;">[{{ error }}]</span>
+						{% endfor %}
+					</p>
+					<p>
+						{{ form_update.date_naissance_update_wtf.label }}<br>
+						{{ form_update.date_naissance_update_wtf(size=32) }}<br>
+						{% for error in form_update.date_naissance_update_wtf.errors %}
+							<span style="color: red;">[{{ error }}]</span>
+						{% endfor %}
+					</p>
+					<p>
+						{{ form_update.nationnalite_update_wtf.label }}<br>
+						{{ form_update.nationnalite_update_wtf(size=32) }}<br>
+						{% for error in form_update.nationnalite_update_wtf.errors %}
+							<span style="color: red;">[{{ error }}]</span>
+						{% endfor %}
+					</p>
+					<p>
+						{{ form_update.courriel_update_wtf.label }}<br>
+						{{ form_update.courriel_update_wtf(size=32) }}<br>
+						{% for error in form_update.courriel_update_wtf.errors %}
+							<span style="color: red;">[{{ error }}]</span>
+						{% endfor %}
+					</p>
+					<p>
+						{{ form_update.telephone_update_wtf.label }}<br>
+						{{ form_update.telephone_update_wtf(size=32) }}<br>
+						{% for error in form_update.telephone_update_wtf.errors %}
+							<span style="color: red;">[{{ error }}]</span>
+						{% endfor %}
+					</p>
+					<p>
+						{{ form_update.FK_equipes_update_wtf.label }}<br>
+						{{ form_update.FK_equipes_update_wtf(size=32) }}<br>
+						{% for error in form_update.FK_equipes_update_wtf.errors %}
+							<span style="color: red;">[{{ error }}]</span>
+						{% endfor %}
+					</p>
+					<p>
+						{{ form_update.FK_cotisations_update_wtf.label }}<br>
+						{{ form_update.FK_cotisations_update_wtf(size=32) }}<br>
+						{% for error in form_update.FK_cotisations_update_wtf.errors %}
+							<span style="color: red;">[{{ error }}]</span>
+						{% endfor %}
+					</p>
+					<p>
+						{{ form_update.FK_passeport_update_wtf.label }}<br>
+						{{ form_update.FK_passeport_update_wtf(size=32) }}<br>
+						{% for error in form_update.FK_passeport_update_wtf.errors %}
+							<span style="color: red;">[{{ error }}]</span>
+						{% endfor %}
+					</p>
 				</div>
 				{{ form_update.submit(class="btn btn-primary") }}
 			</form>

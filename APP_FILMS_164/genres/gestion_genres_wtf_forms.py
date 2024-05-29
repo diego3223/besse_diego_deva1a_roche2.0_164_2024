@@ -145,10 +145,105 @@ class FormWTFUpdateGenre(FlaskForm):
                                                                                         "union")
                                                                          ])
 
+    prenom_update_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
+    prenom_update_wtf = StringField("Clavioter le prénom ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                                        Regexp(prenom_update_regexp,
+                                                                               message="Pas de chiffres, de "
+                                                                                       "caractères "
+                                                                                       "spéciaux, "
+                                                                                       "d'espace à double, de double "
+                                                                                       "apostrophe, de double trait "
+                                                                                       "union")
+                                                                        ])
+
+    date_naissance_update_regexp = ""
+    date_naissance_update_wtf = StringField("Clavioter la date de naissance",
+                                            validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                        Regexp(date_naissance_update_regexp,
+                                                               message="Pas de chiffres, de "
+                                                                       "caractères "
+                                                                       "spéciaux, "
+                                                                       "d'espace à double, de double "
+                                                                       "apostrophe, de double trait "
+                                                                       "union")
+                                                        ])
+
+    nationnalite_update_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
+    nationnalite_update_wtf = StringField("Clavioter la nationnalité ",
+                                            validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                        Regexp(nationnalite_update_regexp,
+                                                               message="Pas de chiffres, de "
+                                                                       "caractères "
+                                                                       "spéciaux, "
+                                                                       "d'espace à double, de double "
+                                                                       "apostrophe, de double trait "
+                                                                       "union")
+                                                        ])
+
+    courriel_update_regexp = ""
+    courriel_update_wtf = StringField("Clavioter le courriel ",
+                                          validators=[Length(min=2, max=50, message="min 2 max 50"),
+                                                      Regexp(courriel_update_regexp,
+                                                             message="Pas de chiffres, de "
+                                                                     "caractères "
+                                                                     "spéciaux, "
+                                                                     "d'espace à double, de double "
+                                                                     "apostrophe, de double trait "
+                                                                     "union")
+                                                      ])
+
+    telephone_update_regexp = ""
+    telephone_update_wtf = StringField("Clavioter le téléphone ",
+                                      validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                  Regexp(telephone_update_regexp,
+                                                         message="Pas de chiffres, de "
+                                                                 "caractères "
+                                                                 "spéciaux, "
+                                                                 "d'espace à double, de double "
+                                                                 "apostrophe, de double trait "
+                                                                 "union")
+                                                  ])
+
+    FK_equipes_update_regexp = ""
+    FK_equipes_update_wtf = StringField("Clavioter l'équipe ",
+                                       validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                   Regexp(FK_equipes_update_regexp,
+                                                          message="Pas de chiffres, de "
+                                                                  "caractères "
+                                                                  "spéciaux, "
+                                                                  "d'espace à double, de double "
+                                                                  "apostrophe, de double trait "
+                                                                  "union")
+                                                   ])
+
+    FK_cotisations_update_regexp = ""
+    FK_cotisations_update_wtf = StringField("Clavioter la cotisation ",
+                                        validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                    Regexp(FK_cotisations_update_regexp,
+                                                           message="Pas de chiffres, de "
+                                                                   "caractères "
+                                                                   "spéciaux, "
+                                                                   "d'espace à double, de double "
+                                                                   "apostrophe, de double trait "
+                                                                   "union")
+                                                    ])
+
+    FK_passeport_update_regexp = ""
+    FK_passeport_update_wtf = StringField("Clavioter le passeport ",
+                                            validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                        Regexp(FK_passeport_update_regexp,
+                                                               message="Pas de chiffres, de "
+                                                                       "caractères "
+                                                                       "spéciaux, "
+                                                                       "d'espace à double, de double "
+                                                                       "apostrophe, de double trait "
+                                                                       "union")
+                                                        ])
+
 
     # date_genre_wtf_essai = DateField("Essai date", validators=[InputRequired("Date obligatoire"),
     #                                                          DataRequired("Date non valide")])
-    # submit = SubmitField("Update genre")
+    submit = SubmitField("Update joueur")
 
 
 class FormWTFDeleteGenre(FlaskForm):

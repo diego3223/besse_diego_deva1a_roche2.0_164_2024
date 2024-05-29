@@ -15,7 +15,7 @@ from APP_FILMS_164.database.database_tools import DBconnection
 from APP_FILMS_164.erreurs.exceptions import *
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFAjouterGenres
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFDeleteGenre
-from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFUpdateGenre
+from APP_FILMS_164.adresse.gestion_adresse_wtf_forms import FormWTFUpdateAdresse
 
 """
     Auteur : OM 2021.03.16
@@ -159,28 +159,34 @@ def adresse_ajouter_wtf():
 @app.route("/adresse_update", methods=['GET', 'POST'])
 def adresse_update_wtf():
     # L'utilisateur vient de cliquer sur le bouton "EDIT". Récupère la valeur de "id_genre"
-    id_genre_update = request.values['id_genre_btn_edit_html']
+    ID_adresse_update = request.values['ID_adresse_btn_edit_html']
 
     # Objet formulaire pour l'UPDATE
-    form_update = FormWTFUpdateGenre()
+    form_adresse_update = FormWTFUpdateAdresse()
     try:
         # 2023.05.14 OM S'il y a des listes déroulantes dans le formulaire
         # La validation pose quelques problèmes
-        if request.method == "POST" and form_update.submit.data:
+        if request.method == "POST" and form_adresse_update.submit.data:
             # Récupèrer la valeur du champ depuis "genre_update_wtf.html" après avoir cliqué sur "SUBMIT".
             # Puis la convertir en lettres minuscules.
-            name_adresse_update = form_update.nom_genre_update_wtf.data
-            name_adresse_update = name_adresse_update.lower()
-            date_genre_essai = form_update.date_genre_wtf_essai.data
+            pays_update_wtf = form_adresse_update.pays_update_wtf.data
+            canton_update_wtf = form_adresse_update.canton_update_wtf.data
+            code_postal_update_wtf = form_adresse_update.code_postal_update_wtf.data
+            ville_update_wtf = form_adresse_update.ville_update_wtf.data
+            nom_rue_update_wtf = form_adresse_update.nom_rue_update_wtf.data
+            numero_rue_wtf = form_adresse_update.numero_rue_update_wtf.data
 
-            valeur_update_dictionnaire = {"value_id_genre": id_genre_update,
-                                          "value_name_genre": name_adresse_update,
-                                          "value_date_genre_essai": date_genre_essai
+            valeur_update_dictionnaire = {"value_ID_adresse": ID_adresse_update,
+                                          "value_pays": pays_update_wtf,
+                                          "value_canton": canton_update_wtf,
+                                          "value_code_postal": code_postal_update_wtf,
+                                          "value_ville": ville_update_wtf,
+                                          "value_nom_rue": nom_rue_update_wtf,
+                                          "value_numero_rue": numero_rue_wtf
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE t_genre SET intitule_genre = %(value_name_genre)s, 
-            date_ins_genre = %(value_date_genre_essai)s WHERE id_genre = %(value_id_genre)s """
+            str_sql_update_intitulegenre = """UPDATE t_adresse SET pays = %(value_pays)s, canton = %(value_canton)s, code_postal = %(value_code_postal)s, ville = %(value_ville)s, nom_rue = %(value_nom_rue)s, numero_rue = %(value_numero_rue)s WHERE ID_adresse = %(value_ID_adresse)s """
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
@@ -189,29 +195,35 @@ def adresse_update_wtf():
 
             # afficher et constater que la donnée est mise à jour.
             # Affiche seulement la valeur modifiée, "ASC" et l'"id_genre_update"
-            return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=id_genre_update))
+            return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=ID_adresse_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
-            str_sql_id_genre = "SELECT id_genre, intitule_genre, date_ins_genre FROM t_genre " \
-                               "WHERE id_genre = %(value_id_genre)s"
-            valeur_select_dictionnaire = {"value_id_genre": id_genre_update}
+            str_sql_id_genre = "SELECT ID_adresse, pays, canton, code_postal, ville, nom_rue, numero_rue FROM t_adresse " \
+                               "WHERE ID_adresse = %(value_ID_adresse)s"
+            valeur_select_dictionnaire = {"value_ID_adresse": ID_adresse_update}
             with DBconnection() as mybd_conn:
                 mybd_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
-            data_nom_genre = mybd_conn.fetchone()
-            print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                  data_nom_genre["intitule_genre"])
+            data_pays = mybd_conn.fetchone()
+            print("data_pays ", data_pays, " type ", type(data_pays), " genre ",
+                  data_pays["pays"])
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "genre_update_wtf.html"
-            form_update.nom_genre_update_wtf.data = data_nom_genre["intitule_genre"]
-            form_update.date_genre_wtf_essai.data = data_nom_genre["date_ins_genre"]
+            form_adresse_update.pays_update_wtf.data = data_pays["pays"]
+            form_adresse_update.canton_update_wtf.data = data_pays["canton"]
+            form_adresse_update.code_postal_update_wtf.data = data_pays["code_postal"]
+            form_adresse_update.ville_update_wtf.data = data_pays["ville"]
+            form_adresse_update.nom_rue_update_wtf.data = data_pays["nom_rue"]
+            form_adresse_update.numero_rue_update_wtf.data = data_pays["numero_rue"]
+
+
 
     except Exception as Exception_genre_update_wtf:
         raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
                                       f"{adresse_update_wtf.__name__} ; "
                                       f"{Exception_genre_update_wtf}")
 
-    return render_template("genres/genre_update_wtf.html", form_update=form_update)
+    return render_template("adresse/adresse_update_wtf.html", form_update=form_adresse_update)
 
 
 """

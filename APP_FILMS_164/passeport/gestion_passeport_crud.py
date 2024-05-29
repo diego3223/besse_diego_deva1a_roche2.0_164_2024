@@ -15,7 +15,7 @@ from APP_FILMS_164.database.database_tools import DBconnection
 from APP_FILMS_164.erreurs.exceptions import *
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFAjouterGenres
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFDeleteGenre
-from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFUpdateGenre
+from APP_FILMS_164.passeport.gestion_passeport_wtf_forms import FormWTFUpdatePasseport
 
 """
     Auteur : OM 2021.03.16
@@ -153,28 +153,25 @@ def passeport_ajouter_wtf():
 @app.route("/passeport_update", methods=['GET', 'POST'])
 def passeport_update_wtf():
     # L'utilisateur vient de cliquer sur le bouton "EDIT". Récupère la valeur de "id_genre"
-    id_genre_update = request.values['id_genre_btn_edit_html']
+    ID_passeport_update = request.values['ID_passeport_btn_edit_html']
 
     # Objet formulaire pour l'UPDATE
-    form_update = FormWTFUpdateGenre()
+    form_passeport_update = FormWTFUpdatePasseport()
     try:
         # 2023.05.14 OM S'il y a des listes déroulantes dans le formulaire
         # La validation pose quelques problèmes
-        if request.method == "POST" and form_update.submit.data:
+        if request.method == "POST" and form_passeport_update.submit.data:
             # Récupèrer la valeur du champ depuis "genre_update_wtf.html" après avoir cliqué sur "SUBMIT".
             # Puis la convertir en lettres minuscules.
-            name_passeport_update = form_update.nom_genre_update_wtf.data
-            name_passeport_update = name_passeport_update.lower()
-            date_genre_essai = form_update.date_genre_wtf_essai.data
+            numero_passeport_update_wtf = form_passeport_update.numero_passeport_update_wtf.data
 
-            valeur_update_dictionnaire = {"value_id_genre": id_genre_update,
-                                          "value_name_genre": name_passeport_update,
-                                          "value_date_genre_essai": date_genre_essai
+
+            valeur_update_dictionnaire = {"value_ID_passeport": ID_passeport_update,
+                                          "value_numero_passeport": numero_passeport_update_wtf,
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE t_genre SET intitule_genre = %(value_name_genre)s, 
-            date_ins_genre = %(value_date_genre_essai)s WHERE id_genre = %(value_id_genre)s """
+            str_sql_update_intitulegenre = """UPDATE t_passeport SET numero_passeport = %(value_numero_passeport)s WHERE ID_passeport = %(value_ID_passeport)s """
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
@@ -183,29 +180,29 @@ def passeport_update_wtf():
 
             # afficher et constater que la donnée est mise à jour.
             # Affiche seulement la valeur modifiée, "ASC" et l'"id_genre_update"
-            return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=id_genre_update))
+            return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=ID_passeport_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
-            str_sql_id_genre = "SELECT id_genre, intitule_genre, date_ins_genre FROM t_genre " \
-                               "WHERE id_genre = %(value_id_genre)s"
-            valeur_select_dictionnaire = {"value_id_genre": id_genre_update}
+            str_sql_id_genre = "SELECT ID_passeport, numero_passeport FROM t_passeport " \
+                               "WHERE ID_passeport = %(value_ID_passeport)s"
+            valeur_select_dictionnaire = {"value_ID_passeport": ID_passeport_update}
             with DBconnection() as mybd_conn:
                 mybd_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
             # Une seule valeur est suffisante "fetchone()", vu qu'il n'y a qu'un seul champ "nom genre" pour l'UPDATE
-            data_nom_genre = mybd_conn.fetchone()
-            print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                  data_nom_genre["intitule_genre"])
+            data_numero_passeport = mybd_conn.fetchone()
+            print("data_numero_passeport ", data_numero_passeport, " type ", type(data_numero_passeport), " genre ",
+                  data_numero_passeport["numero_passeport"])
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "genre_update_wtf.html"
-            form_update.nom_genre_update_wtf.data = data_nom_genre["intitule_genre"]
-            form_update.date_genre_wtf_essai.data = data_nom_genre["date_ins_genre"]
+            form_passeport_update.numero_passeport_update_wtf.data = data_numero_passeport["numero_passeport"]
+
 
     except Exception as Exception_genre_update_wtf:
         raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
                                       f"{passeport_update_wtf.__name__} ; "
                                       f"{Exception_genre_update_wtf}")
 
-    return render_template("genres/genre_update_wtf.html", form_update=form_update)
+    return render_template("passeport/passeport_update_wtf.html", form_update=form_passeport_update)
 
 
 """
