@@ -53,8 +53,8 @@ class FormWTFUpdatePasseport(FlaskForm):
         Dans le formulaire "genre_update_wtf.html" on impose que le champ soit rempli.
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
-    numero_passeport_update_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    numero_passeport_update_wtf = StringField("Clavioter le numero de passeport ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+    numero_passeport_update_regexp = ""
+    numero_passeport_update_wtf = StringField("Clavioter le numéro de passeport ", validators=[Length(min=2, max=20, message="min 2 max 20"),
                                                                           Regexp(numero_passeport_update_regexp,
                                                                                  message="Pas de chiffres, de "
                                                                                          "caractères "
@@ -63,12 +63,37 @@ class FormWTFUpdatePasseport(FlaskForm):
                                                                                          "apostrophe, de double trait "
                                                                                          "union")
                                                                           ])
+
+    date_photo_passeport_update_regexp = ""
+    date_photo_passeport_update_wtf = StringField("Clavioter la date de la photo passeport ",
+                                              validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                          Regexp(date_photo_passeport_update_regexp,
+                                                                 message="Pas de chiffres, de "
+                                                                         "caractères "
+                                                                         "spéciaux, "
+                                                                         "d'espace à double, de double "
+                                                                         "apostrophe, de double trait "
+                                                                         "union")
+                                                          ])
+
+    date_qualification_update_regexp = ""
+    date_qualification_update_wtf = StringField("Clavioter la date de qualification ",
+                                                  validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                              Regexp(date_qualification_update_regexp,
+                                                                     message="Pas de chiffres, de "
+                                                                             "caractères "
+                                                                             "spéciaux, "
+                                                                             "d'espace à double, de double "
+                                                                             "apostrophe, de double trait "
+                                                                             "union")
+                                                              ])
+
     # date_genre_wtf_essai = DateField("Essai date", validators=[InputRequired("Date obligatoire"),
                                                               # DataRequired("Date non valide")])
     submit = SubmitField("Update passeport")
 
 
-class FormWTFDeleteGenre(FlaskForm):
+class FormWTFDeletePasseport(FlaskForm):
     """
         Dans le formulaire "genre_delete_wtf.html"
 
@@ -77,7 +102,7 @@ class FormWTFDeleteGenre(FlaskForm):
         submit_btn_conf_del : Bouton de confirmation pour effacer un "genre".
         submit_btn_annuler : Bouton qui permet d'afficher la table "t_genre".
     """
-    nom_genre_delete_wtf = StringField("Effacer ce genre")
-    submit_btn_del = SubmitField("Effacer genre")
+    nom_genre_delete_wtf = StringField("Effacer ce passeport")
+    submit_btn_del = SubmitField("Effacer passeport")
     submit_btn_conf_del = SubmitField("Etes-vous sur d'effacer ?")
     submit_btn_annuler = SubmitField("Annuler")

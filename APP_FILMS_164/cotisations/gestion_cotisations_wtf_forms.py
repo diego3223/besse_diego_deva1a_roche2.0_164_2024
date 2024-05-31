@@ -16,7 +16,7 @@ class FormWTFAjouterCotisations(FlaskForm):
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
     nom_coti_regexp = ""
-    nom_coti_wtf = StringField("Clavioter le nom ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+    nom_coti_wtf = StringField("Clavioter le nom de la cotisation ", validators=[Length(min=2, max=20, message="min 2 max 20"),
                                                                    Regexp(nom_coti_regexp,
                                                                           message="Pas de chiffres, de caractères "
                                                                                   "spéciaux, "
@@ -25,7 +25,7 @@ class FormWTFAjouterCotisations(FlaskForm):
                                                                    ])
 
     prix_coti_regexp = ""
-    prix_coti_wtf = StringField("Clavioter le prix ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+    prix_coti_wtf = StringField("Clavioter le prix de la cotisation ", validators=[Length(min=2, max=20, message="min 2 max 20"),
                                                                   Regexp(prix_coti_regexp,
                                                                          message="Pas de chiffres, de caractères "
                                                                                  "spéciaux, "
@@ -42,7 +42,7 @@ class FormWTFUpdateCotisations(FlaskForm):
         Définition d'un "bouton" submit avec un libellé personnalisé.
     """
     nom_coti_update_regexp = "^([A-Z]|[a-zÀ-ÖØ-öø-ÿ])[A-Za-zÀ-ÖØ-öø-ÿ]*['\- ]?[A-Za-zÀ-ÖØ-öø-ÿ]+$"
-    nom_coti_update_wtf = StringField("Clavioter le genre ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+    nom_coti_update_wtf = StringField("Clavioter le nom de la cotisation ", validators=[Length(min=2, max=20, message="min 2 max 20"),
                                                                           Regexp(nom_coti_update_regexp,
                                                                                  message="Pas de chiffres, de "
                                                                                          "caractères "
@@ -51,6 +51,18 @@ class FormWTFUpdateCotisations(FlaskForm):
                                                                                          "apostrophe, de double trait "
                                                                                          "union")
                                                                           ])
+
+    prix_coti_update_regexp = ""
+    prix_coti_update_wtf = StringField("Clavioter le prix de la cotisation ", validators=[Length(min=2, max=20, message="min 2 max 20"),
+                                                                         Regexp(prix_coti_update_regexp,
+                                                                                message="Pas de chiffres, de "
+                                                                                        "caractères "
+                                                                                        "spéciaux, "
+                                                                                        "d'espace à double, de double "
+                                                                                        "apostrophe, de double trait "
+                                                                                        "union")
+                                                                         ])
+
     # date_genre_wtf_essai = DateField("Essai date", validators=[InputRequired("Date obligatoire"),
                                                               # DataRequired("Date non valide")])
     submit = SubmitField("Update cotisation")
@@ -65,7 +77,7 @@ class FormWTFDeleteCotisations(FlaskForm):
         submit_btn_conf_del : Bouton de confirmation pour effacer un "genre".
         submit_btn_annuler : Bouton qui permet d'afficher la table "t_genre".
     """
-    nom_genre_delete_wtf = StringField("Effacer ce genre")
-    submit_btn_del = SubmitField("Effacer genre")
+    nom_genre_delete_wtf = StringField("Effacer cette cotisation")
+    submit_btn_del = SubmitField("Effacer cotisation")
     submit_btn_conf_del = SubmitField("Etes-vous sur d'effacer ?")
     submit_btn_annuler = SubmitField("Annuler")

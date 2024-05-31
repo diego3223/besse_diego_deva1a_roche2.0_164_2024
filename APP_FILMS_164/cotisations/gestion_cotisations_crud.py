@@ -14,7 +14,7 @@ from APP_FILMS_164.cotisations.gestion_cotisations_wtf_forms import FormWTFAjout
 from APP_FILMS_164.database.database_tools import DBconnection
 from APP_FILMS_164.erreurs.exceptions import *
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFAjouterGenres
-from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFDeleteGenre
+from APP_FILMS_164.cotisations.gestion_cotisations_wtf_forms import FormWTFDeleteCotisations
 from APP_FILMS_164.cotisations.gestion_cotisations_wtf_forms import FormWTFUpdateCotisations
 
 """
@@ -61,11 +61,11 @@ def cotisations_afficher(order_by, ID_cotisations_sel):
                     flash("""La table "t_genre" est vide. !!""", "warning")
                 elif not data_cotisations and ID_cotisations_sel > 0:
                     # Si l'utilisateur change l'id_genre dans l'URL et que le genre n'existe pas,
-                    flash(f"Le genre demandé n'existe pas !!", "warning")
+                    flash(f"La cotisation demandée n'existe pas !!", "warning")
                 else:
                     # Dans tous les autres cas, c'est que la table "t_genre" est vide.
                     # OM 2020.04.09 La ligne ci-dessous permet de donner un sentiment rassurant aux utilisateurs.
-                    flash(f"Données genres affichés !!", "success")
+                    flash(f"Données cotisations affichées !!", "success")
 
         except Exception as Exception_genres_afficher:
             raise ExceptionGenresAfficher(f"fichier : {Path(__file__).name}  ;  "
@@ -161,14 +161,15 @@ def cotisations_update_wtf():
             # Récupèrer la valeur du champ depuis "genre_update_wtf.html" après avoir cliqué sur "SUBMIT".
             # Puis la convertir en lettres minuscules.
             nom_coti_update_wtf = form_coti_update.nom_coti_update_wtf.data
-
+            prix_coti_update_wtf = form_coti_update.prix_coti_update_wtf.data
 
             valeur_update_dictionnaire = {"value_ID_cotisations": ID_cotisations_update,
                                           "value_nom_coti": nom_coti_update_wtf,
+                                          "value_prix_coti": prix_coti_update_wtf
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE t_cotisations SET nom_coti = %(value_nom_coti)s WHERE ID_cotisations = %(value_ID_cotisations)s """
+            str_sql_update_intitulegenre = """UPDATE t_cotisations SET nom_coti = %(value_nom_coti)s, prix_coti = %(value_prix_coti)s WHERE ID_cotisations = %(value_ID_cotisations)s """
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
@@ -180,7 +181,7 @@ def cotisations_update_wtf():
             return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=ID_cotisations_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
-            str_sql_id_genre = "SELECT ID_cotisations, nom_coti FROM t_cotisations " \
+            str_sql_id_genre = "SELECT ID_cotisations, nom_coti, prix_coti FROM t_cotisations " \
                                "WHERE ID_cotisations = %(value_ID_cotisations)s"
             valeur_select_dictionnaire = {"value_ID_cotisations": ID_cotisations_update}
             with DBconnection() as mybd_conn:
@@ -192,6 +193,7 @@ def cotisations_update_wtf():
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "genre_update_wtf.html"
             form_coti_update.nom_coti_update_wtf.data = data_nom_coti["nom_coti"]
+            form_coti_update.prix_coti_update_wtf.data = data_nom_coti["prix_coti"]
 
     except Exception as Exception_genre_update_wtf:
         raise ExceptionGenreUpdateWtf(f"fichier : {Path(__file__).name}  ;  "
@@ -216,60 +218,57 @@ def cotisations_update_wtf():
 """
 
 
-@app.route("/genre_delete", methods=['GET', 'POST'])
+@app.route("/cotisations_delete", methods=['GET', 'POST'])
 def cotisations_delete_wtf():
     data_films_attribue_genre_delete = None
     btn_submit_del = None
     # L'utilisateur vient de cliquer sur le bouton "DELETE". Récupère la valeur de "id_genre"
-    id_genre_delete = request.values['id_genre_btn_delete_html']
+    ID_cotisations_delete = request.values['ID_cotisations_btn_delete_html']
 
     # Objet formulaire pour effacer le genre sélectionné.
-    form_delete = FormWTFDeleteGenre()
+    form_cotisations_delete = FormWTFDeleteCotisations()
     try:
-        print(" on submit ", form_delete.validate_on_submit())
-        if request.method == "POST" and form_delete.validate_on_submit():
+        print(" on submit ", form_cotisations_delete.validate_on_submit())
+        if request.method == "POST" and form_cotisations_delete.validate_on_submit():
 
-            if form_delete.submit_btn_annuler.data:
-                return redirect(url_for("genres_afficher", order_by="ASC", id_genre_sel=0))
+            if form_cotisations_delete.submit_btn_annuler.data:
+                return redirect(url_for("cotisations_afficher", order_by="ASC", id_genre_sel=0))
 
-            if form_delete.submit_btn_conf_del.data:
+            if form_cotisations_delete.submit_btn_conf_del.data:
                 # Récupère les données afin d'afficher à nouveau
                 # le formulaire "genres/genre_delete_wtf.html" lorsque le bouton "Etes-vous sur d'effacer ?" est cliqué.
                 data_films_attribue_genre_delete = session['data_films_attribue_genre_delete']
                 print("data_films_attribue_genre_delete ", data_films_attribue_genre_delete)
 
-                flash(f"Effacer le genre de façon définitive de la BD !!!", "danger")
+                flash(f"Effacer la cotisation de façon définitive de la BD !!!", "danger")
                 # L'utilisateur vient de cliquer sur le bouton de confirmation pour effacer...
                 # On affiche le bouton "Effacer genre" qui va irrémédiablement EFFACER le genre
                 btn_submit_del = True
 
-            if form_delete.submit_btn_del.data:
-                valeur_delete_dictionnaire = {"value_id_genre": id_genre_delete}
+            if form_cotisations_delete.submit_btn_del.data:
+                valeur_delete_dictionnaire = {"value_ID_cotisations": ID_cotisations_delete}
                 print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
-                str_sql_delete_films_genre = """"""
-                str_sql_delete_idgenre = """"""
+                str_sql_delete_films_genre = """DELETE FROM t_cotisations WHERE ID_cotisations = %(value_ID_cotisations)s"""
+                str_sql_delete_idgenre = """DELETE FROM t_cotisations WHERE ID_cotisations = %(value_ID_cotisations)s"""
                 # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_genre_film"
                 # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_genre_film"
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(str_sql_delete_films_genre, valeur_delete_dictionnaire)
                     mconn_bd.execute(str_sql_delete_idgenre, valeur_delete_dictionnaire)
 
-                flash(f"Genre définitivement effacé !!", "success")
-                print(f"Genre définitivement effacé !!")
+                flash(f"Cotisation définitivement effacée !!", "success")
+                print(f"Cotisation définitivement effacée !!")
 
                 # afficher les données
-                return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=0))
+                return redirect(url_for('cotisations_afficher', order_by="ASC", ID_cotisations_sel=0))
 
         if request.method == "GET":
-            valeur_select_dictionnaire = {"value_id_genre": id_genre_delete}
-            print(id_genre_delete, type(id_genre_delete))
+            valeur_select_dictionnaire = {"value_ID_cotisations": ID_cotisations_delete}
+            print(ID_cotisations_delete, type(ID_cotisations_delete))
 
             # Requête qui affiche tous les films_genres qui ont le genre que l'utilisateur veut effacer
-            str_sql_genres_films_delete = """SELECT id_genre_film, nom_film, id_genre, intitule_genre FROM t_genre_film 
-                                            INNER JOIN t_film ON t_genre_film.fk_film = t_film.id_film
-                                            INNER JOIN t_genre ON t_genre_film.fk_genre = t_genre.id_genre
-                                            WHERE fk_genre = %(value_id_genre)s"""
+            str_sql_genres_films_delete = """SELECT * FROM t_cotisations WHERE ID_cotisations = %(value_ID_cotisations)s"""
 
             with DBconnection() as mydb_conn:
                 mydb_conn.execute(str_sql_genres_films_delete, valeur_select_dictionnaire)
@@ -281,17 +280,17 @@ def cotisations_delete_wtf():
                 session['data_films_attribue_genre_delete'] = data_films_attribue_genre_delete
 
                 # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
-                str_sql_id_genre = "SELECT id_genre, intitule_genre FROM t_genre WHERE id_genre = %(value_id_genre)s"
+                str_sql_id_genre = "SELECT * FROM t_cotisations WHERE ID_cotisations = %(value_ID_cotisations)s"
 
                 mydb_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
                 # Une seule valeur est suffisante "fetchone()",
                 # vu qu'il n'y a qu'un seul champ "nom genre" pour l'action DELETE
-                data_nom_genre = mydb_conn.fetchone()
-                print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                      data_nom_genre["intitule_genre"])
+                data_nom_coti = mydb_conn.fetchone()
+                # print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
+                     # data_nom_genre["intitule_genre"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "genre_delete_wtf.html"
-            form_delete.nom_genre_delete_wtf.data = data_nom_genre["intitule_genre"]
+            form_cotisations_delete.nom_genre_delete_wtf.data = data_nom_coti["nom_coti"]
 
             # Le bouton pour l'action "DELETE" dans le form. "genre_delete_wtf.html" est caché.
             btn_submit_del = False
@@ -301,7 +300,7 @@ def cotisations_delete_wtf():
                                       f"{cotisations_delete_wtf.__name__} ; "
                                       f"{Exception_cotisations_delete_wtf}")
 
-    return render_template("genres/genre_delete_wtf.html",
-                           form_delete=form_delete,
+    return render_template("cotisations/cotisations_delete_wtf.html",
+                           form_delete=form_cotisations_delete,
                            btn_submit_del=btn_submit_del,
                            data_films_associes=data_films_attribue_genre_delete)

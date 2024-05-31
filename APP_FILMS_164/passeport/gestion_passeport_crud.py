@@ -14,7 +14,7 @@ from APP_FILMS_164.passeport.gestion_passeport_wtf_forms import FormWTFAjouterPa
 from APP_FILMS_164.database.database_tools import DBconnection
 from APP_FILMS_164.erreurs.exceptions import *
 from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFAjouterGenres
-from APP_FILMS_164.genres.gestion_genres_wtf_forms import FormWTFDeleteGenre
+from APP_FILMS_164.passeport.gestion_passeport_wtf_forms import FormWTFDeletePasseport
 from APP_FILMS_164.passeport.gestion_passeport_wtf_forms import FormWTFUpdatePasseport
 
 """
@@ -62,11 +62,11 @@ def passeport_afficher(order_by, ID_passeport_sel):
                     flash("""La table "t_genre" est vide. !!""", "warning")
                 elif not data_passeport and ID_passeport_sel > 0:
                     # Si l'utilisateur change l'id_genre dans l'URL et que le genre n'existe pas,
-                    flash(f"Le genre demandé n'existe pas !!", "warning")
+                    flash(f"Le passeport demandé n'existe pas !!", "warning")
                 else:
                     # Dans tous les autres cas, c'est que la table "t_genre" est vide.
                     # OM 2020.04.09 La ligne ci-dessous permet de donner un sentiment rassurant aux utilisateurs.
-                    flash(f"Données genres affichés !!", "success")
+                    flash(f"Données passeport affichées !!", "success")
 
         except Exception as Exception_genres_afficher:
             raise ExceptionGenresAfficher(f"fichier : {Path(__file__).name}  ;  "
@@ -164,14 +164,18 @@ def passeport_update_wtf():
             # Récupèrer la valeur du champ depuis "genre_update_wtf.html" après avoir cliqué sur "SUBMIT".
             # Puis la convertir en lettres minuscules.
             numero_passeport_update_wtf = form_passeport_update.numero_passeport_update_wtf.data
+            date_photo_passeport_update_wtf = form_passeport_update.date_photo_passeport_update_wtf.data
+            date_qualification_update_wtf = form_passeport_update.date_qualification_update_wtf.data
 
 
             valeur_update_dictionnaire = {"value_ID_passeport": ID_passeport_update,
                                           "value_numero_passeport": numero_passeport_update_wtf,
+                                          "value_date_photo_passeport": date_photo_passeport_update_wtf,
+                                          "value_date_qualification": date_qualification_update_wtf
                                           }
             print("valeur_update_dictionnaire ", valeur_update_dictionnaire)
 
-            str_sql_update_intitulegenre = """UPDATE t_passeport SET numero_passeport = %(value_numero_passeport)s WHERE ID_passeport = %(value_ID_passeport)s """
+            str_sql_update_intitulegenre = """UPDATE t_passeport SET numero_passeport = %(value_numero_passeport)s, date_photo_passeport = %(value_date_photo_passeport)s, date_qualification = %(value_date_qualification)s WHERE ID_passeport = %(value_ID_passeport)s """
             with DBconnection() as mconn_bd:
                 mconn_bd.execute(str_sql_update_intitulegenre, valeur_update_dictionnaire)
 
@@ -183,7 +187,7 @@ def passeport_update_wtf():
             return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=ID_passeport_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
-            str_sql_id_genre = "SELECT ID_passeport, numero_passeport FROM t_passeport " \
+            str_sql_id_genre = "SELECT ID_passeport, numero_passeport, date_photo_passeport, date_qualification FROM t_passeport " \
                                "WHERE ID_passeport = %(value_ID_passeport)s"
             valeur_select_dictionnaire = {"value_ID_passeport": ID_passeport_update}
             with DBconnection() as mybd_conn:
@@ -195,6 +199,10 @@ def passeport_update_wtf():
 
             # Afficher la valeur sélectionnée dans les champs du formulaire "genre_update_wtf.html"
             form_passeport_update.numero_passeport_update_wtf.data = data_numero_passeport["numero_passeport"]
+            form_passeport_update.date_photo_passeport_update_wtf.data = data_numero_passeport["date_photo_passeport"]
+            form_passeport_update.date_qualification_update_wtf.data = data_numero_passeport["date_qualification"]
+
+
 
 
     except Exception as Exception_genre_update_wtf:
@@ -225,55 +233,52 @@ def passeport_delete_wtf():
     data_films_attribue_genre_delete = None
     btn_submit_del = None
     # L'utilisateur vient de cliquer sur le bouton "DELETE". Récupère la valeur de "id_genre"
-    id_genre_delete = request.values['id_genre_btn_delete_html']
+    ID_passeport_delete = request.values['ID_passeport_btn_delete_html']
 
     # Objet formulaire pour effacer le genre sélectionné.
-    form_delete = FormWTFDeleteGenre()
+    form_passeport_delete = FormWTFDeletePasseport()
     try:
-        print(" on submit ", form_delete.validate_on_submit())
-        if request.method == "POST" and form_delete.validate_on_submit():
+        print(" on submit ", form_passeport_delete.validate_on_submit())
+        if request.method == "POST" and form_passeport_delete.validate_on_submit():
 
-            if form_delete.submit_btn_annuler.data:
-                return redirect(url_for("genres_afficher", order_by="ASC", id_genre_sel=0))
+            if form_passeport_delete.submit_btn_annuler.data:
+                return redirect(url_for("passeport_afficher", order_by="ASC", id_genre_sel=0))
 
-            if form_delete.submit_btn_conf_del.data:
+            if form_passeport_delete.submit_btn_conf_del.data:
                 # Récupère les données afin d'afficher à nouveau
                 # le formulaire "genres/genre_delete_wtf.html" lorsque le bouton "Etes-vous sur d'effacer ?" est cliqué.
                 data_films_attribue_genre_delete = session['data_films_attribue_genre_delete']
                 print("data_films_attribue_genre_delete ", data_films_attribue_genre_delete)
 
-                flash(f"Effacer le genre de façon définitive de la BD !!!", "danger")
+                flash(f"Effacer le passeport de façon définitive de la BD !!!", "danger")
                 # L'utilisateur vient de cliquer sur le bouton de confirmation pour effacer...
                 # On affiche le bouton "Effacer genre" qui va irrémédiablement EFFACER le genre
                 btn_submit_del = True
 
-            if form_delete.submit_btn_del.data:
-                valeur_delete_dictionnaire = {"value_id_genre": id_genre_delete}
+            if form_passeport_delete.submit_btn_del.data:
+                valeur_delete_dictionnaire = {"value_ID_passeport": ID_passeport_delete}
                 print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
-                str_sql_delete_films_genre = """"""
-                str_sql_delete_idgenre = """"""
+                str_sql_delete_films_genre = """DELETE FROM t_passeport WHERE ID_passeport = %(value_ID_passeport)s"""
+                str_sql_delete_idgenre = """DELETE FROM t_passeport WHERE ID_passeport = %(value_ID_passeport)s"""
                 # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_genre_film"
                 # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_genre_film"
                 with DBconnection() as mconn_bd:
                     mconn_bd.execute(str_sql_delete_films_genre, valeur_delete_dictionnaire)
                     mconn_bd.execute(str_sql_delete_idgenre, valeur_delete_dictionnaire)
 
-                flash(f"Genre définitivement effacé !!", "success")
-                print(f"Genre définitivement effacé !!")
+                flash(f"Passeport définitivement effacé !!", "success")
+                print(f"Passeport définitivement effacé !!")
 
                 # afficher les données
-                return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=0))
+                return redirect(url_for('passeport_afficher', order_by="ASC", ID_passeport_sel=0))
 
         if request.method == "GET":
-            valeur_select_dictionnaire = {"value_id_genre": id_genre_delete}
-            print(id_genre_delete, type(id_genre_delete))
+            valeur_select_dictionnaire = {"value_ID_passeport": ID_passeport_delete}
+            print(ID_passeport_delete, type(ID_passeport_delete))
 
             # Requête qui affiche tous les films_genres qui ont le genre que l'utilisateur veut effacer
-            str_sql_genres_films_delete = """SELECT id_genre_film, nom_film, id_genre, intitule_genre FROM t_genre_film 
-                                            INNER JOIN t_film ON t_genre_film.fk_film = t_film.id_film
-                                            INNER JOIN t_genre ON t_genre_film.fk_genre = t_genre.id_genre
-                                            WHERE fk_genre = %(value_id_genre)s"""
+            str_sql_genres_films_delete = """SELECT * FROM t_passeport WHERE ID_passeport = %(value_ID_passeport)s"""
 
             with DBconnection() as mydb_conn:
                 mydb_conn.execute(str_sql_genres_films_delete, valeur_select_dictionnaire)
@@ -285,17 +290,17 @@ def passeport_delete_wtf():
                 session['data_films_attribue_genre_delete'] = data_films_attribue_genre_delete
 
                 # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
-                str_sql_id_genre = "SELECT id_genre, intitule_genre FROM t_genre WHERE id_genre = %(value_id_genre)s"
+                str_sql_id_genre = "SELECT * FROM t_passeport WHERE ID_passeport = %(value_ID_passeport)s"
 
                 mydb_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
                 # Une seule valeur est suffisante "fetchone()",
                 # vu qu'il n'y a qu'un seul champ "nom genre" pour l'action DELETE
-                data_nom_genre = mydb_conn.fetchone()
-                print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
-                      data_nom_genre["intitule_genre"])
+                data_numero_passeport = mydb_conn.fetchone()
+                # print("data_nom_genre ", data_nom_genre, " type ", type(data_nom_genre), " genre ",
+                      # data_nom_genre["intitule_genre"])
 
             # Afficher la valeur sélectionnée dans le champ du formulaire "genre_delete_wtf.html"
-            form_delete.nom_genre_delete_wtf.data = data_nom_genre["intitule_genre"]
+            form_passeport_delete.nom_genre_delete_wtf.data = data_numero_passeport["numero_passeport"]
 
             # Le bouton pour l'action "DELETE" dans le form. "genre_delete_wtf.html" est caché.
             btn_submit_del = False
@@ -305,7 +310,7 @@ def passeport_delete_wtf():
                                       f"{passeport_delete_wtf.__name__} ; "
                                       f"{Exception_passeport_delete_wtf}")
 
-    return render_template("genres/genre_delete_wtf.html",
-                           form_delete=form_delete,
+    return render_template("passeport/passeport_delete_wtf.html",
+                           form_delete=form_passeport_delete,
                            btn_submit_del=btn_submit_del,
                            data_films_associes=data_films_attribue_genre_delete)

@@ -43,11 +43,11 @@ def genres_afficher(order_by, id_genre_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_id_genre_selected_dictionnaire = {"value_ID_joueurs_selected": id_genre_sel}
-                    strsql_genres_afficher = """SELECT nom, prenom, nationnalite FROM t_joueurs WHERE ID_joueurs = %(value_ID_joueurs_selected)s"""
+                    strsql_genres_afficher = """SELECT * from t_joueurs WHERE ID_joueurs = %(value_ID_joueurs_selected)s"""
 
                     mc_afficher.execute(strsql_genres_afficher, valeur_id_genre_selected_dictionnaire)
                 else:
-                    strsql_genres_afficher = """SELECT nom, prenom, nationnalite FROM t_joueurs ORDER BY ID_joueurs DESC"""
+                    strsql_genres_afficher = """SELECT * from t_joueurs ORDER BY ID_joueurs DESC"""
 
                     mc_afficher.execute(strsql_genres_afficher)
 
@@ -60,11 +60,11 @@ def genres_afficher(order_by, id_genre_sel):
                     flash("""La table "t_genre" est vide. !!""", "warning")
                 elif not data_genres and id_genre_sel > 0:
                     # Si l'utilisateur change l'id_genre dans l'URL et que le genre n'existe pas,
-                    flash(f"Le genre demandé n'existe pas !!", "warning")
+                    flash(f"Le joueur demandé n'existe pas !!", "warning")
                 else:
                     # Dans tous les autres cas, c'est que la table "t_genre" est vide.
                     # OM 2020.04.09 La ligne ci-dessous permet de donner un sentiment rassurant aux utilisateurs.
-                    flash(f"Données genres affichés !!", "success")
+                    flash(f"Données joueurs affichées !!", "success")
 
         except Exception as Exception_genres_afficher:
             raise ExceptionGenresAfficher(f"fichier : {Path(__file__).name}  ;  "
@@ -265,7 +265,7 @@ def genre_delete_wtf():
     data_films_attribue_genre_delete = None
     btn_submit_del = None
     # L'utilisateur vient de cliquer sur le bouton "DELETE". Récupère la valeur de "id_genre"
-    ID_joueurs_delete = request.values['id_genre_btn_delete_html']
+    ID_joueurs_delete = request.values['ID_joueurs_btn_delete_html']
 
     # Objet formulaire pour effacer le genre sélectionné.
     form_delete = FormWTFDeleteGenre()
@@ -282,7 +282,7 @@ def genre_delete_wtf():
                 data_films_attribue_genre_delete = session['data_films_attribue_genre_delete']
                 print("data_films_attribue_genre_delete ", data_films_attribue_genre_delete)
 
-                flash(f"Effacer le genre de façon définitive de la BD !!!", "danger")
+                flash(f"Effacer le joueur de façon définitive de la BD !!!", "danger")
                 # L'utilisateur vient de cliquer sur le bouton de confirmation pour effacer...
                 # On affiche le bouton "Effacer genre" qui va irrémédiablement EFFACER le genre
                 btn_submit_del = True
@@ -291,7 +291,7 @@ def genre_delete_wtf():
                 valeur_delete_dictionnaire = {"value_id_genre": ID_joueurs_delete}
                 print("valeur_delete_dictionnaire ", valeur_delete_dictionnaire)
 
-                str_sql_delete_films_genre = """DELETE FROM t_habiter  WHERE FK_joueurs = %(value_id_genre)s"""
+                str_sql_delete_films_genre = """DELETE FROM t_habiter WHERE FK_joueurs = %(value_id_genre)s"""
                 str_sql_delete_idgenre = """DELETE FROM t_joueurs WHERE ID_joueurs = %(value_id_genre)s"""
                 # Manière brutale d'effacer d'abord la "fk_genre", même si elle n'existe pas dans la "t_genre_film"
                 # Ensuite on peut effacer le genre vu qu'il n'est plus "lié" (INNODB) dans la "t_genre_film"
@@ -299,8 +299,8 @@ def genre_delete_wtf():
                     mconn_bd.execute(str_sql_delete_films_genre, valeur_delete_dictionnaire)
                     mconn_bd.execute(str_sql_delete_idgenre, valeur_delete_dictionnaire)
 
-                flash(f"Genre définitivement effacé !!", "success")
-                print(f"Genre définitivement effacé !!")
+                flash(f"Joueur définitivement effacé !!", "success")
+                print(f"Joueur définitivement effacé !!")
 
                 # afficher les données
                 return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=0))
@@ -313,7 +313,7 @@ def genre_delete_wtf():
             strsql_joueur_selected = """SELECT ID_joueurs, civilite, nom, prenom, numero_rue FROM t_habiter
                                                     INNER JOIN t_joueurs ON t_joueurs.ID_joueurs = t_habiter.FK_joueurs
                                                     INNER JOIN t_adresse ON t_adresse.ID_adresse = t_habiter.FK_adresse
-                                                    WHERE ID_joueurs = %(value_id_joueur)s"""
+                                                    WHERE ID_joueurs = %(value_ID_joueurs)s"""
 
             with DBconnection() as mydb_conn:
                 mydb_conn.execute(strsql_joueur_selected, valeur_select_dictionnaire)
@@ -325,7 +325,7 @@ def genre_delete_wtf():
                 session['data_films_attribue_genre_delete'] = data_films_attribue_genre_delete
 
                 # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
-                str_sql_id_genre = "SELECT * FROM t_joueurs WHERE ID_joueurs = %(value_id_joueur)s"
+                str_sql_id_genre = "SELECT * FROM t_joueurs WHERE ID_joueurs = %(value_ID_joueurs)s"
 
                 mydb_conn.execute(str_sql_id_genre, valeur_select_dictionnaire)
                 # Une seule valeur est suffisante "fetchone()",
@@ -345,7 +345,7 @@ def genre_delete_wtf():
                                       f"{genre_delete_wtf.__name__} ; "
                                       f"{Exception_genre_delete_wtf}")
 
-    return render_template("equipes/equipes_delete_wtf.html",
+    return render_template("genres/genre_delete_wtf.html",
                            form_delete=form_delete,
                            btn_submit_del=btn_submit_del,
                            data_films_associes=data_films_attribue_genre_delete)

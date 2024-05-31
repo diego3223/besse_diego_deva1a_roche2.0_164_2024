@@ -84,7 +84,7 @@ class FormWTFAjouterGenres(FlaskForm):
                                            ])
 
     FK_equipes_regexp = ""
-    FK_equipes_wtf = StringField("Clavioter l'équipe ",
+    FK_equipes_wtf = StringField("Clavioter le numéro correspondant à l'équipe ",
                                 validators=[Length(min=1, max=20, message="min 1 max 20"),
                                             Regexp(FK_equipes_regexp,
                                                    message="Pas de chiffres, de caractères "
@@ -94,7 +94,7 @@ class FormWTFAjouterGenres(FlaskForm):
                                             ])
 
     FK_cotisations_regexp = ""
-    FK_cotisations_wtf = StringField("Clavioter la cotisation ",
+    FK_cotisations_wtf = StringField("Clavioter le numéro correspondant à la cotisation ",
                                  validators=[Length(min=1, max=20, message="min 1 max 20"),
                                              Regexp(FK_cotisations_regexp,
                                                     message="Pas de chiffres, de caractères "
@@ -104,7 +104,7 @@ class FormWTFAjouterGenres(FlaskForm):
                                              ])
 
     FK_passeport_regexp = ""
-    FK_passeport_wtf = StringField("Clavioter le passeport ",
+    FK_passeport_wtf = StringField("Clavioter le numéro correspondant au passeport ",
                                      validators=[Length(min=1, max=20, message="min 1 max 20"),
                                                  Regexp(FK_passeport_regexp,
                                                         message="Pas de chiffres, de caractères "
@@ -205,7 +205,7 @@ class FormWTFUpdateGenre(FlaskForm):
                                                   ])
 
     FK_equipes_update_regexp = ""
-    FK_equipes_update_wtf = StringField("Clavioter l'équipe ",
+    FK_equipes_update_wtf = StringField("Clavioter le numéro correspondant à l'équipe ",
                                        validators=[Length(min=2, max=20, message="min 2 max 20"),
                                                    Regexp(FK_equipes_update_regexp,
                                                           message="Pas de chiffres, de "
@@ -217,7 +217,7 @@ class FormWTFUpdateGenre(FlaskForm):
                                                    ])
 
     FK_cotisations_update_regexp = ""
-    FK_cotisations_update_wtf = StringField("Clavioter la cotisation ",
+    FK_cotisations_update_wtf = StringField("Clavioter le numéro correspondant à la cotisation ",
                                         validators=[Length(min=2, max=20, message="min 2 max 20"),
                                                     Regexp(FK_cotisations_update_regexp,
                                                            message="Pas de chiffres, de "
@@ -229,7 +229,7 @@ class FormWTFUpdateGenre(FlaskForm):
                                                     ])
 
     FK_passeport_update_regexp = ""
-    FK_passeport_update_wtf = StringField("Clavioter le passeport ",
+    FK_passeport_update_wtf = StringField("Clavioter le numéro correspondant au passeport ",
                                             validators=[Length(min=2, max=20, message="min 2 max 20"),
                                                         Regexp(FK_passeport_update_regexp,
                                                                message="Pas de chiffres, de "
