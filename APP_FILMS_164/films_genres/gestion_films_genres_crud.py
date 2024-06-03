@@ -121,14 +121,14 @@ def edit_genre_film_selected():
             data_genre_film_selected, data_genres_films_non_attribues, data_genres_films_attribues = \
                 genres_films_afficher_data(valeur_id_film_selected_dictionnaire)
 
-            print(data_genre_film_selected)
+            print("adresse data_genre_film_selected",data_genre_film_selected)
             lst_data_film_selected = [item['ID_joueurs'] for item in data_genre_film_selected]
             print("lst_data_film_selected  ", lst_data_film_selected,
                   type(lst_data_film_selected))
 
             # Dans le composant "tags-selector-tagselect" on doit connaître
             # les genres qui ne sont pas encore sélectionnés.
-            lst_data_genres_films_non_attribues = [item['id_genre'] for item in data_genres_films_non_attribues]
+            lst_data_genres_films_non_attribues = [item['ID_adresse'] for item in data_genres_films_non_attribues]
             session['session_lst_data_genres_films_non_attribues'] = lst_data_genres_films_non_attribues
             print("lst_data_genres_films_non_attribues  ", lst_data_genres_films_non_attribues,
                   type(lst_data_genres_films_non_attribues))
@@ -277,7 +277,7 @@ def genres_films_afficher_data(valeur_id_film_selected_dict):
     print("besse valeur_id_film_selected_dict...", valeur_id_film_selected_dict)
     try:
 
-        strsql_film_selected = """SELECT ID_joueurs, civilite, nom, prenom GROUP_CONCAT(ID_adresse) as JoueursAdresse FROM t_habiter
+        strsql_film_selected = """SELECT ID_joueurs, civilite, nom, prenom, GROUP_CONCAT(ID_adresse) as JoueursAdresse FROM t_habiter
                                         INNER JOIN t_joueurs ON t_joueurs.ID_joueurs = t_habiter.FK_joueurs
                                         INNER JOIN t_adresse ON t_adresse.ID_adresse = t_habiter.FK_adresse
                                         WHERE ID_joueurs = %(value_id_film_selected)s"""
@@ -299,7 +299,7 @@ def genres_films_afficher_data(valeur_id_film_selected_dict):
             # Récupère les données de la requête.
             data_genres_films_non_attribues = mc_afficher.fetchall()
             # Affichage dans la console
-            print("genres_films_afficher_data ----> data_genres_films_non_attribues ", data_genres_films_non_attribues,
+            print("besse genres_films_afficher_data ----> data_genres_films_non_attribues ", data_genres_films_non_attribues,
                   " Type : ",
                   type(data_genres_films_non_attribues))
 
