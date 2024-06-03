@@ -62,14 +62,13 @@
 							Joueurs/Adresse
 						</a>
 						<ul class="dropdown-menu dropdown-menu-dark" aria-labelledby="navbarDarkDropdownMenuLink">
-							<li><a class="nav-link" href="{{ url_for('films_genres_afficher', id_film_sel=0) }}">Adresse/Joueurs</a>
-							</li>
-							<li><a class="nav-link" href="{{ url_for('films_genres_afficher', id_film_sel=0) }}">Films/Genres</a></li>
+							<li><a class="nav-link" href="{{ url_for('films_genres_afficher', id_film_sel=0) }}">Adresse/Joueurs</a></li>
+							<li><a class="nav-link" href="{{ url_for('films_genres_afficher', id_film_sel=0) }}">Adresse/Joueurs</a></li>
 						</ul>
 					</li>
 					</li>
 
-										<li class="nav-item">
+					<li class="nav-item">
 						<!--		Afficher la liste des genres dans l'ordre (ASC) et tous les genres (0)-->
 						<a class="nav-link" href="{{ url_for('equipes_afficher', order_by='ASC', ID_equipes_sel=0) }}">Equipes</a>
 					</li>

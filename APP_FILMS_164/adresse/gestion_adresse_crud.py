@@ -281,8 +281,8 @@ def adresse_delete_wtf():
                     mconn_bd.execute(str_sql_delete_idgenre, valeur_delete_dictionnaire)
 
 
-                flash(f"Genre définitivement effacé !!", "success")
-                print(f"Genre définitivement effacé !!")
+                flash(f"Adresse définitivement effacée !!", "success")
+                print(f"Adresse définitivement effacée !!")
 
                 # afficher les données
                 return redirect(url_for('adresse_afficher', order_by="ASC", ID_adresse_sel=0))

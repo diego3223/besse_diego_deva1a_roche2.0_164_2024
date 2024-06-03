@@ -34,11 +34,10 @@ def films_genres_afficher(id_film_sel):
             with DBconnection() as mc_afficher:
                 strsql_genres_films_afficher_data = """
                 SELECT ID_joueurs,civilite,nom,prenom, GROUP_CONCAT(ville) AS Villes_joueur FROM t_habiter
-                RIGHT JOIN t_joueurs ON t_joueurs.ID_joueurs = t_habiter.fk_joueurs
-                LEFT JOIN t_adresse ON t_adresse.ID_adresse = t_habiter.fk_adresse
+                RIGHT JOIN t_joueurs ON t_joueurs.ID_joueurs = t_habiter.FK_joueurs
+                LEFT JOIN t_adresse ON t_adresse.ID_adresse = t_habiter.FK_adresse
                 GROUP BY ID_joueurs
                 """
-
                 if id_film_sel == 0:
                     # le paramètre 0 permet d'afficher tous les films
                     # Sinon le paramètre représente la valeur de l'id du film
@@ -63,7 +62,7 @@ def films_genres_afficher(id_film_sel):
                     # Si l'utilisateur change l'id_film dans l'URL et qu'il ne correspond à aucun film
                     flash(f"Le film {id_film_sel} demandé n'existe pas !!", "warning")
                 else:
-                    flash(f"Données films et genres affichés !!", "success")
+                    flash(f"Données joueurs et adresse affichées !!", "success")
 
         except Exception as Exception_films_genres_afficher:
             raise ExceptionFilmsGenresAfficher(f"fichier : {Path(__file__).name}  ;  {films_genres_afficher.__name__} ;"
@@ -95,7 +94,7 @@ def edit_genre_film_selected():
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_afficher = """SELECT * FROM t_adresse ORDER BY ID_adresse ASC"""
+                strsql_genres_afficher = """SELECT ID_adresse, ville FROM t_adresse ORDER BY ID_adresse ASC"""
                 mc_afficher.execute(strsql_genres_afficher)
             data_genres_all = mc_afficher.fetchall()
             print("dans edit_genre_film_selected ---> data_genres_all", data_genres_all)

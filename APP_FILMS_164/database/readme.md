@@ -13,27 +13,27 @@ Les éléments suivants seront nécéssaires pour faire fonctionner le projet :
    - Pour les MAC : MAMP ou https://www.codeur.com/tuto/creation-de-site-internet/version-mysql/
 
 #### 2. Python 
-   - https://www.python.org/downloads/
+   - Pour installer => https://www.python.org/downloads/
 
    - ⚠️ Cocher la case pour que le “PATH” intègre le programme Python
 
-   - Une fois la “case” du PATH cochée, il faut choisir d’installer
+   - Une fois la case du "PATH" cochée, il faut choisir d’installer
 
    - Un peu avant la fin du processus d’installation, cliquer sur “disabled length limit” et cliquer sur “CLOSE”
 
    - Le test de Python se fait après avec le programme “PyCharm"
 
 #### 3. Git
-   - https://gitforwindows.org/
+   - Pour installer => https://gitforwindows.org/
 
-   - Test “GIT” => se fait dans le programme “PyCharm” (on en reviendra plus tard)
+   - Test GIT => se fait dans le programme “PyCharm” (on en revient après)
 
 #### 4. PyCharm
 
    - “PyCharm” (community) doit être installé, car toutes mes démonstrations sont faites avec cette version de l’IDE. Vous pouvez télécharger tous les produits de JetBrains car vous êtes étudiant.
      - https://www.jetbrains.com/fr-fr/community/education/#students (Votre carte d’apprenti suffit pour avoir accès aux outils pro)
 
-   - Lors de l’installation, il faut cocher toutes les options ASSOCIATIONS, ADD PATH, etc
+   - Au moment de l’installation, il faut cocher toutes les options ASSOCIATIONS, ADD PATH, etc
    - Ouvrir “PyCharm” pour la première fois pour le configurer. Choisir le bouton “New Project”
    - Changer le répertoire pour ce nouveau projet, il faut créer un nouveau répertoire “vide” sur votre disque en local.
    - Il est important d’avoir sélectionné le répertoire que vous venez de créer car “PyCharm” va automatiquement créer un environnement virtuel (.venv) dans ce répertoire.
@@ -42,7 +42,7 @@ Les éléments suivants seront nécéssaires pour faire fonctionner le projet :
      - Sélectionner tout le texte avec un CTRL + A
      - puis couper avec un CTRL + X 
      - puis CTL + Z (UNDO) suivi d'un CTRL + Y (REDO)
-     - PyCharm va vous demander de choisir l’action du CTRL + Y pour faire un REDO. Le CTRL + Y représente l’action REDO, mais pas chez JetBrains.
+     - PyCharm va vous demander de choisir l’action du CTRL + Y pour faire un REDO. Le CTRL + Y représente l’action REDO (presque tout le temps), mais pas chez JetBrains.
      
 ### Marche à suivre :
 
@@ -50,7 +50,7 @@ Les éléments suivants seront nécéssaires pour faire fonctionner le projet :
 Dans un terminal de commande windows, copier les lignes suivantes et les coller dans le terminal :
 
     cd C:\
-    git clone https://github.com/diego3223/besse_diego_deva1a_roche2.0_164_2024.git besse_diego_deva1a_roche2.0_164_2024
+    git clone https://github.com/diego3223/besse_diego_deva1a_roche2.0_164_2024.git 
     cd besse_diego_deva1a_roche2.0_164_2024
     rmdir /S/Q .git
     python -m venv .venv
@@ -82,8 +82,9 @@ Dans un terminal de commande windows, copier les lignes suivantes et les coller 
    - Démarrer le microframework FLASK
      - Dans le répertoire racine du projet, ouvrir le fichier run_mon_app.py
      - Cliquer avec le bouton droit sur l’onglet de ce fichier et choisir “run” (CTRL-MAJ-F10)
-     - Ensuite, cliquer sur le lien avec des numéros de couleur rouge.
+     - Ensuite, cliquer sur le lien "Running on http:/" suivit de numéros de couleurs bleus.
 
+## Voici, mon application !!
 
 Le "début de la fin"
 
