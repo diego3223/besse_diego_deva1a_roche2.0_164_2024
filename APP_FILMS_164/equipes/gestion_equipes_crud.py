@@ -114,7 +114,7 @@ def equipes_ajouter_wtf():
                 print(f"Données insérées !!")
 
                 # Pour afficher et constater l'insertion de la valeur, on affiche en ordre inverse. (DESC)
-                return redirect(url_for('genres_afficher', order_by='DESC', id_genre_sel=0))
+                return redirect(url_for('equipes_afficher', order_by='DESC', ID_equipes_sel=0))
 
         except Exception as Exception_equipes_ajouter_wtf:
             raise ExceptionGenresAjouterWtf(f"fichier : {Path(__file__).name}  ;  "
@@ -174,7 +174,7 @@ def equipes_update_wtf():
 
             # afficher et constater que la donnée est mise à jour.
             # Affiche seulement la valeur modifiée, "ASC" et l'"id_genre_update"
-            return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=ID_equipes_update))
+            return redirect(url_for('equipes_afficher', order_by="DESC", ID_equipes_sel=ID_equipes_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
             str_sql_id_genre = "SELECT ID_equipes, nom_equipes FROM t_equipes " \

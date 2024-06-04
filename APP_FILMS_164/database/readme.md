@@ -48,7 +48,7 @@ Les éléments suivants seront nécéssaires pour faire fonctionner le projet :
 
 #### 1. Télécharger "Roche2.0"
 Dans un terminal de commande windows, copier les lignes suivantes et les coller dans le terminal :
-
+'''
     cd C:\
     git clone https://github.com/diego3223/besse_diego_deva1a_roche2.0_164_2024.git 
     cd besse_diego_deva1a_roche2.0_164_2024
@@ -63,7 +63,7 @@ Dans un terminal de commande windows, copier les lignes suivantes et les coller 
     REM -- Pause jusqu'à ce qu'une touche soit pressée, puis ferme la fenêtre --
     pause
     exit
-
+'''
 #### 2. Ouvrir le projet avec PyCharm :
    - Ouvrir PyCharm, Menu « File » => « Open project »  
      Observer la structure du répértoire "besse_diego_deva1a_roche2.0_164_2024", il faut que le répértoire ".venv" soit présent.

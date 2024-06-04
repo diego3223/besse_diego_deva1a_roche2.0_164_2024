@@ -126,7 +126,7 @@ def adresse_ajouter_wtf():
                 print(f"Données insérées !!")
 
                 # Pour afficher et constater l'insertion de la valeur, on affiche en ordre inverse. (DESC)
-                return redirect(url_for('genres_afficher', order_by='DESC', id_genre_sel=0))
+                return redirect(url_for('adresse_afficher', order_by='DESC', ID_adresse_sel=0))
 
         except Exception as Exception_adresse_ajouter_wtf:
             raise ExceptionGenresAjouterWtf(f"fichier : {Path(__file__).name}  ;  "
@@ -195,7 +195,7 @@ def adresse_update_wtf():
 
             # afficher et constater que la donnée est mise à jour.
             # Affiche seulement la valeur modifiée, "ASC" et l'"id_genre_update"
-            return redirect(url_for('genres_afficher', order_by="ASC", id_genre_sel=ID_adresse_update))
+            return redirect(url_for('adresse_afficher', order_by="DESC", ID_adresse_sel=ID_adresse_update))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
             str_sql_id_genre = "SELECT ID_adresse, pays, canton, code_postal, ville, nom_rue, numero_rue FROM t_adresse " \
