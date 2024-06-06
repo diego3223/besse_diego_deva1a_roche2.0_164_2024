@@ -33,7 +33,7 @@ def films_genres_afficher(id_film_sel):
         try:
             with DBconnection() as mc_afficher:
                 strsql_genres_films_afficher_data = """
-                SELECT ID_joueurs,civilite,nom,prenom, GROUP_CONCAT(ville) AS Villes_joueur FROM t_habiter
+                SELECT ID_joueurs,civilite,nom,prenom, GROUP_CONCAT(nom_rue) AS Nom_rue_joueur FROM t_habiter
                 RIGHT JOIN t_joueurs ON t_joueurs.ID_joueurs = t_habiter.FK_joueurs
                 LEFT JOIN t_adresse ON t_adresse.ID_adresse = t_habiter.FK_adresse
                 GROUP BY ID_joueurs
@@ -94,7 +94,7 @@ def edit_genre_film_selected():
     if request.method == "GET":
         try:
             with DBconnection() as mc_afficher:
-                strsql_genres_afficher = """SELECT ID_adresse, ville FROM t_adresse ORDER BY ID_adresse ASC"""
+                strsql_genres_afficher = """SELECT ID_adresse, nom_rue FROM t_adresse ORDER BY ID_adresse ASC"""
                 mc_afficher.execute(strsql_genres_afficher)
             data_genres_all = mc_afficher.fetchall()
             print("dans edit_genre_film_selected ---> data_genres_all", data_genres_all)
@@ -148,7 +148,7 @@ def edit_genre_film_selected():
 
             # Extrait les valeurs contenues dans la table "t_genres", colonne "intitule_genre"
             # Le composant javascript "tagify" pour afficher les tags n'a pas besoin de l'id_genre
-            lst_data_genres_films_non_attribues = [item['ville'] for item in data_genres_films_non_attribues]
+            lst_data_genres_films_non_attribues = [item['nom_rue'] for item in data_genres_films_non_attribues]
             print("lst_all_genres gf_edit_genre_film_selected ", lst_data_genres_films_non_attribues,
                   type(lst_data_genres_films_non_attribues))
 
@@ -282,12 +282,12 @@ def genres_films_afficher_data(valeur_id_film_selected_dict):
                                         INNER JOIN t_adresse ON t_adresse.ID_adresse = t_habiter.FK_adresse
                                         WHERE ID_joueurs = %(value_id_film_selected)s"""
 
-        strsql_genres_films_non_attribues = """SELECT ID_adresse, ville FROM t_adresse WHERE ID_adresse not in(SELECT ID_adresse as idHabiter FROM t_habiter
+        strsql_genres_films_non_attribues = """SELECT ID_adresse, nom_rue FROM t_adresse WHERE ID_adresse not in(SELECT ID_adresse as idHabiter FROM t_habiter
                                                     INNER JOIN t_joueurs ON t_joueurs.ID_joueurs = t_habiter.FK_joueurs
                                                     INNER JOIN t_adresse ON t_adresse.ID_adresse = t_habiter.FK_adresse
                                                     WHERE ID_joueurs = %(value_id_film_selected)s)"""
 
-        strsql_genres_films_attribues = """SELECT ID_joueurs, ID_adresse, ville FROM t_habiter
+        strsql_genres_films_attribues = """SELECT ID_joueurs, ID_adresse, nom_rue FROM t_habiter
                                             INNER JOIN t_joueurs ON t_joueurs.ID_joueurs = t_habiter.FK_joueurs
                                             INNER JOIN t_adresse ON t_adresse.ID_adresse = t_habiter.FK_adresse
                                             WHERE ID_joueurs = %(value_id_film_selected)s"""

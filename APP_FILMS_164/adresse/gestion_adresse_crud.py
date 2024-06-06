@@ -45,11 +45,11 @@ def adresse_afficher(order_by, ID_adresse_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_ID_adresse_selected_dictionnaire = {"value_id_genre_selected": ID_adresse_sel}
-                    strsql_adresse_afficher = """SELECT ID_adresse, pays, canton, code_postal, ville, numero_rue  FROM t_adresse WHERE id_genre = %(value_ID_adresse)s, %(value_pays)s, %(value_canton)s, %(value_code_postal)s, %(value_ville)s, %(value_numero_rue)s """
+                    strsql_adresse_afficher = """SELECT ID_adresse, pays, canton, code_postal, ville, nom_rue, numero_rue  FROM t_adresse WHERE id_genre = %(value_ID_adresse)s, %(value_pays)s, %(value_canton)s, %(value_code_postal)s, %(value_ville)s, %(value_numero_rue)s """
 
                     mc_afficher.execute(strsql_adresse_afficher, valeur_ID_adresse_selected_dictionnaire)
                 else:
-                    strsql_adresse_afficher = """SELECT ID_adresse, pays, canton, code_postal, ville, numero_rue FROM t_adresse ORDER BY ID_adresse DESC"""
+                    strsql_adresse_afficher = """SELECT ID_adresse, pays, canton, code_postal, ville, nom_rue, numero_rue FROM t_adresse ORDER BY ID_adresse DESC"""
 
                     mc_afficher.execute(strsql_adresse_afficher)
 
@@ -195,7 +195,7 @@ def adresse_update_wtf():
 
             # afficher et constater que la donnée est mise à jour.
             # Affiche seulement la valeur modifiée, "ASC" et l'"id_genre_update"
-            return redirect(url_for('adresse_afficher', order_by="DESC", ID_adresse_sel=ID_adresse_update))
+            return redirect(url_for('adresse_afficher', order_by="DESC", ID_adresse_sel=0))
         elif request.method == "GET":
             # Opération sur la BD pour récupérer "id_genre" et "intitule_genre" de la "t_genre"
             str_sql_id_genre = "SELECT ID_adresse, pays, canton, code_postal, ville, nom_rue, numero_rue FROM t_adresse " \
@@ -255,7 +255,7 @@ def adresse_delete_wtf():
         if request.method == "POST" and form_adresse_delete.validate_on_submit():
 
             if form_adresse_delete.submit_btn_annuler.data:
-                return redirect(url_for("adresse_afficher", order_by="ASC", id_genre_sel=0))
+                return redirect(url_for("adresse_afficher", order_by="ASC", ID_adresse_sel=0))
 
             if form_adresse_delete.submit_btn_conf_del.data:
                 # Récupère les données afin d'afficher à nouveau
