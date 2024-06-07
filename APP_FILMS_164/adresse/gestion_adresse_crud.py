@@ -45,7 +45,7 @@ def adresse_afficher(order_by, ID_adresse_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_ID_adresse_selected_dictionnaire = {"value_id_genre_selected": ID_adresse_sel}
-                    strsql_adresse_afficher = """SELECT ID_adresse, pays, canton, code_postal, ville, nom_rue, numero_rue  FROM t_adresse WHERE id_genre = %(value_ID_adresse)s, %(value_pays)s, %(value_canton)s, %(value_code_postal)s, %(value_ville)s, %(value_numero_rue)s """
+                    strsql_adresse_afficher = """SELECT ID_adresse, pays, canton, code_postal, ville, nom_rue, numero_rue  FROM t_adresse WHERE ID_adresse = %(value_ID_adresse)s, %(value_pays)s, %(value_canton)s, %(value_code_postal)s, %(value_ville)s, %(value_numero_rue)s """
 
                     mc_afficher.execute(strsql_adresse_afficher, valeur_ID_adresse_selected_dictionnaire)
                 else:

@@ -45,7 +45,7 @@ def passeport_afficher(order_by, ID_passeport_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_ID_passeport_selected_dictionnaire = {"value_id_genre_selected": ID_passeport_sel}
-                    strsql_passeport_afficher = """SELECT ID_passeport, numero_passeport, date_photo_passeport, date_qualification FROM t_passeport WHERE id_genre = %(value_ID_passeport)s, %(value_numero_passeport)s, %(value_date_photo_passeport)s, %(value_date_qualification)s """
+                    strsql_passeport_afficher = """SELECT ID_passeport, numero_passeport, date_photo_passeport, date_qualification FROM t_passeport WHERE ID_passeport = %(value_ID_passeport)s, %(value_numero_passeport)s, %(value_date_photo_passeport)s, %(value_date_qualification)s """
 
                     mc_afficher.execute(strsql_passeport_afficher, valeur_ID_passeport_selected_dictionnaire)
                 else:

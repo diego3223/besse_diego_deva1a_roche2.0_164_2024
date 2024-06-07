@@ -44,7 +44,7 @@ def equipes_afficher(order_by, ID_equipes_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_ID_equipes_selected_dictionnaire = {"value_id_genre_selected": ID_equipes_sel}
-                    strsql_equipes_afficher = """SELECT ID_equipes, nom_equipes  FROM t_equipes WHERE id_genre = %(value_ID_equipes)s, %(value_nom_equipes)s """
+                    strsql_equipes_afficher = """SELECT ID_equipes, nom_equipes  FROM t_equipes WHERE ID_equipes = %(value_ID_equipes)s, %(value_nom_equipes)s """
 
                     mc_afficher.execute(strsql_equipes_afficher, valeur_ID_equipes_selected_dictionnaire)
                 else:

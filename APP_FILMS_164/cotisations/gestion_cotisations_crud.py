@@ -44,7 +44,7 @@ def cotisations_afficher(order_by, ID_cotisations_sel):
                     # donc, je précise les champs à afficher
                     # Constitution d'un dictionnaire pour associer l'id du genre sélectionné avec un nom de variable
                     valeur_ID_cotisations_selected_dictionnaire = {"value_id_genre_selected": ID_cotisations_sel}
-                    strsql_cotisations_afficher = """SELECT ID_cotisations, nom_coti, prix_coti FROM t_cotisations WHERE id_genre = %(value_ID_cotisations)s, %(value_nom_coti)s, %(value_prix_coti)s """
+                    strsql_cotisations_afficher = """SELECT ID_cotisations, nom_coti, prix_coti FROM t_cotisations WHERE ID_cotisations = %(value_ID_cotisations)s, %(value_nom_coti)s, %(value_prix_coti)s """
 
                     mc_afficher.execute(strsql_cotisations_afficher, valeur_ID_cotisations_selected_dictionnaire)
                 else:
