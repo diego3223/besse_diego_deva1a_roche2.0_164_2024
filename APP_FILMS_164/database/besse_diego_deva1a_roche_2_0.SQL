@@ -31,19 +31,20 @@ CREATE TABLE IF NOT EXISTS `t_adresse` (
   `nom_rue` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `numero_rue` int DEFAULT NULL,
   PRIMARY KEY (`ID_adresse`)
-) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=57 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
--- Listage des données de la table module_164_diego_besse.t_adresse : ~9 rows (environ)
+-- Listage des données de la table module_164_diego_besse.t_adresse : ~10 rows (environ)
 INSERT INTO `t_adresse` (`ID_adresse`, `pays`, `canton`, `code_postal`, `ville`, `nom_rue`, `numero_rue`) VALUES
 	(1, 'Suisse', 'VD', 1844, 'Villeneuve', 'Route de Praz-Bérard', 3),
 	(2, 'Suisse', 'VD', 1852, 'Roche', 'Rue du Grand-Cerclet ', 210),
-	(3, 'Suisse', 'VD', 1844, 'Villeneuve', 'Rue du Carroz-Devant ', 10),
-	(4, 'Suisse', 'VD', 1844, 'Villeneuve', 'Rue du Hameau ', 7),
+	(3, 'Suisse', 'VD', 1860, 'Aigle', 'Rue du Carroz-Devant ', 10),
+	(4, 'Suisse', 'VD', 1696, 'Vouvry', 'Rue du Hameau', 7),
 	(5, 'Suisse', 'VD', 1847, 'Rennaz', 'Route de Noville ', 5),
-	(6, 'Suisse', 'VD', 1844, 'Villeneuve', 'Route de Carroz Derrière ', 9),
+	(6, 'Suisse', 'VD', 1800, 'Vevey', 'Route de Carroz Derrière ', 9),
 	(7, 'Suisse', 'VD', 1845, 'Noville', 'Route d\'Evian', 7),
-	(8, 'Suisse', 'VD', 1847, 'Rennaz', 'Chemin du Levant ', 9),
-	(19, 'Suisse', 'VS', 1950, 'Saillon', 'Chemin de la Cascade', 87);
+	(8, 'Suisse', 'VD', 1815, 'Montreux', 'Chemin du Levant ', 9),
+	(19, 'Suisse', 'VS', 1950, 'Saillon', 'Chemin de la Cascade', 87),
+	(45, 'Suisse', 'VS', 1846, 'Chessel', 'Avenue de Jordil ', 12);
 
 -- Listage de la structure de table module_164_diego_besse. t_cotisations
 DROP TABLE IF EXISTS `t_cotisations`;
@@ -52,7 +53,7 @@ CREATE TABLE IF NOT EXISTS `t_cotisations` (
   `nom_coti` varchar(25) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `prix_coti` int DEFAULT NULL,
   PRIMARY KEY (`ID_cotisations`)
-) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Listage des données de la table module_164_diego_besse.t_cotisations : ~6 rows (environ)
 INSERT INTO `t_cotisations` (`ID_cotisations`, `nom_coti`, `prix_coti`) VALUES
@@ -69,7 +70,7 @@ CREATE TABLE IF NOT EXISTS `t_equipes` (
   `ID_equipes` int NOT NULL AUTO_INCREMENT,
   `nom_equipes` varchar(22) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   PRIMARY KEY (`ID_equipes`)
-) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Listage des données de la table module_164_diego_besse.t_equipes : ~7 rows (environ)
 INSERT INTO `t_equipes` (`ID_equipes`, `nom_equipes`) VALUES
@@ -92,11 +93,10 @@ CREATE TABLE IF NOT EXISTS `t_habiter` (
   KEY `FK_adresse` (`FK_adresse`),
   CONSTRAINT `FK_t_habiter_t_adresse` FOREIGN KEY (`FK_adresse`) REFERENCES `t_adresse` (`ID_adresse`),
   CONSTRAINT `FK_t_habiter_t_joueurs` FOREIGN KEY (`FK_joueurs`) REFERENCES `t_joueurs` (`ID_joueurs`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=46 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Listage des données de la table module_164_diego_besse.t_habiter : ~10 rows (environ)
 INSERT INTO `t_habiter` (`ID_habiter`, `FK_joueurs`, `FK_adresse`) VALUES
-	(1, 1, 1),
 	(2, 2, 2),
 	(3, 3, 3),
 	(4, 4, 4),
@@ -105,7 +105,8 @@ INSERT INTO `t_habiter` (`ID_habiter`, `FK_joueurs`, `FK_adresse`) VALUES
 	(7, 7, 7),
 	(8, 8, 8),
 	(9, 41, 19),
-	(11, 1, 2);
+	(29, 1, 1),
+	(43, 1, 45);
 
 -- Listage de la structure de table module_164_diego_besse. t_joueurs
 DROP TABLE IF EXISTS `t_joueurs`;
@@ -128,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `t_joueurs` (
   CONSTRAINT `FK_t_joueurs_t_cotisations` FOREIGN KEY (`FK_cotisations`) REFERENCES `t_cotisations` (`ID_cotisations`),
   CONSTRAINT `FK_t_joueurs_t_equipes` FOREIGN KEY (`FK_equipes`) REFERENCES `t_equipes` (`ID_equipes`),
   CONSTRAINT `FK_t_joueurs_t_passeport` FOREIGN KEY (`FK_passeport`) REFERENCES `t_passeport` (`ID_passeport`)
-) ENGINE=InnoDB AUTO_INCREMENT=62 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=70 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Listage des données de la table module_164_diego_besse.t_joueurs : ~9 rows (environ)
 INSERT INTO `t_joueurs` (`ID_joueurs`, `civilite`, `nom`, `prenom`, `date_naissance`, `nationnalite`, `courriel`, `telephone`, `FK_equipes`, `FK_cotisations`, `FK_passeport`) VALUES
@@ -140,7 +141,7 @@ INSERT INTO `t_joueurs` (`ID_joueurs`, `civilite`, `nom`, `prenom`, `date_naissa
 	(6, 'Monsieur', 'Soares Amorim', 'Tiago', '2008-09-02', 'Portugal', 'sofia-tiago2010@hotmail.com', 787493381, 1, 1, 6),
 	(7, 'Madame', 'Spidalieri', 'Ohra', '2010-07-14', 'Italie', 'stephane.spidalieri@bluewin.ch', 792120457, 2, 2, 7),
 	(8, 'Monsieur', 'Smajlaj', 'Albin', '2010-03-03', 'Kosovo', 'demesmajlaj1@outlook.com', 763916032, 4, 4, 8),
-	(41, 'Monsieur', 'Dante', 'Cédric', '2007-02-06', 'Suisse', 'cedric.kante@gmail.com', 768783276, 1, 1, 9);
+	(41, 'Monsieur', 'Dante', 'Cédric', '2007-02-06', 'Suisse', 'cedric.dante@gmail.com', 768783276, 1, 1, 9);
 
 -- Listage de la structure de table module_164_diego_besse. t_passeport
 DROP TABLE IF EXISTS `t_passeport`;
@@ -150,7 +151,7 @@ CREATE TABLE IF NOT EXISTS `t_passeport` (
   `date_photo_passeport` date DEFAULT NULL,
   `date_qualification` date DEFAULT NULL,
   PRIMARY KEY (`ID_passeport`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 -- Listage des données de la table module_164_diego_besse.t_passeport : ~9 rows (environ)
 INSERT INTO `t_passeport` (`ID_passeport`, `numero_passeport`, `date_photo_passeport`, `date_qualification`) VALUES
