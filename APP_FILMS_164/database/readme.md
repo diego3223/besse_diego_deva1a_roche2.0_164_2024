@@ -1,4 +1,4 @@
-# Module 164 2024.03.26
+# Module 164 2024.06.06
 ### Marche à suivre pour le bon fonctionnement de la base de données :
 
 Cette documentation va vous apprendre à utiliser ma base de données via une application FLASK.
@@ -12,7 +12,7 @@ Les éléments suivants seront nécéssaires pour faire fonctionner le projet :
    - LARAGON (heidi.sql) ou XAMPP ou UWAMP
    - Pour les MAC => MAMP ou https://www.codeur.com/tuto/creation-de-site-internet/version-mysql/
 
-#### 2. Python 
+#### 2. Python
    - Installer Python => https://www.python.org/downloads/
 
    - ⚠️ Cocher la case pour que le PATH intègre le programme Python
@@ -99,4 +99,10 @@ Dans un terminal de commande windows, copier les lignes suivantes et les coller 
 
 
 ### Voici mon application !
+
+Diego Besse
+
+Lien Git : https://github.com/diego3223/besse_diego_deva1a_roche2.0_164_2024.git
+
+
 
